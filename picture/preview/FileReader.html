@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>使用H5提供的FileReader读取文件</title>
+		<!--
+        	作者：wwangtaoc11@163.com
+        	时间：2021-05-27
+        	描述：
+        	1.API文档:
+        	  https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader/FileReader
+        	2.Jquery对象只能调用jquery对象的属性和方法,javaScript只能调用javaScript对象的属性和方法;
+        	   $("**")[0]:将jquery对象($("**"))转为javaScript对象;
+        	3.方法
+        	   readAsDataURL(); 
+        	          该方法 一旦完成，result属性中将包含一个data:URL格式的Base64字符串以表示所读取文件的内容;
+        	4.事件处理：
+        	   onload:在读取操作完成时触发
+        -->
+        <script type="text/javascript" src="../../js/common/jquery-3.4.1.js.js" ></script>
+        <script>
+        	function fileReader(){
+        		try{
+        			//1.构建FileReader对象
+        		var reader = new FileReader();
+        		//2.Jquery对象转javaScript对象
+        		var file = $("input[type='file']")[0].files[0];
+        		//3.读取文件内容
+					reader.readAsDataURL(file);
+					reader.onload = function(e){
+						var path = e.target.result;
+						$(".pre-photo").attr("src",path);
+					}
+        		} catch (e) {
+					throw new Error('browser doest not support FileReader')
+				}
+        		
+        	}
+        </script>
+	</head>
+	<body>
+		<input type="file" name="file" onchange="fileReader()" />
+		<img alt="" class="pre-photo">
+	</body>
+</html>

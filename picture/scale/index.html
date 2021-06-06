@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			* {
+			    margin: 0;
+			    padding: 0;
+			}
+			
+			.wrapper-upload {
+			    width: 980px;
+			    height: 500px;
+			    overflow: hidden;
+			    position: relative;
+			    margin: 50px auto;
+			}
+			.position-wrap{
+				 background: rgba(58, 56, 63, 0.8);
+				    border: solid 1px #100000;
+				    color: #fff;
+				    padding: 8px;
+				    text-align: left;
+				    position: absolute;
+				    right: 325px;
+				    top: 35px;
+			}
+			.position-wrap .positionButtonSpan img {
+			    float: right;
+			    border: 0;
+			}
+			.zoomButton {
+			    border: 0;
+			    cursor: pointer;
+			}
+			.positionMapClass area {
+			    cursor: pointer;
+			}
+			.input-file-wrap{
+				margin-bottom: 10px;
+			}
+			.photo-orgin-wrap{
+				position: relative;
+				overflow: hidden;
+				width: 250px;
+				height: 250px;
+				border: 1px solid #ccc;
+				float: left;
+				margin-right: 15px;
+			}
+			.photo-preview-wrap{
+				width: 250px;
+				height: 250px;				
+				float: left;
+			}
+			.orgin-photo{
+				cursor: move;
+			}
+			.pre-photo{
+				width: 150px;
+				height: 150px;
+				border-radius: 50%;
+			}
+			
+		</style>
+		<script type="text/javascript" src="../../js/common/jquery-3.4.1.js.js" ></script>
+		<script>
+			$(function(){
+			   var options={}
+			 var upload = $(".wrapper-upload").uploadFile(options);
+			   
+				
+			});
+			
+			var obj = {
+				value:0,
+				increment:function(){
+					this.value += typeof inc === 'number' ? inc :1;
+				}
+				
+			}
+			/*obj.increment();
+			console.log(obj.value);
+			obj.increment(2);
+			console.log(obj.value);*/
+		</script>
+		<script>
+			/**
+			 * w=1920,h=1200;
+			 * W=x,   H=184,
+			 * w/h=W/H
+			 * W=w/h*H
+			 * 
+			 
+			 * 
+			 * 
+			 * 
+			 * 
+			 *图片的常见比例
+			 * 3:2  =1.5
+			 * 4:3  ≈1.333
+			 * 1:1  =1
+			 * 16:9 ≈1.777
+			 * 其他比例：
+			 * 2:3≈0.666			
+			 * 3:4 =0.75			
+			 * 16:10 =1.6
+			 * 18:9  =2 
+			 * 2.39:1 =2.39
+			 * 
+			 * 150*150  1.226666666666667  top:0 left:28;    
+			 * 200*200  0.92			   top:0 left:28;
+			 * 作用域:一条数据可以在哪个范围中使用;
+			 * 相关文档：https://www.cnblogs.com/jianghao233/p/8989769.html
+			 * 150*x=184
+			 * 
+			 * JavaScript使用var定义变量和不是使用var关键字声明的区别;
+			 *  1.var num=1;
+			 *    如果在方法中声明则为局部变量,在全局作用域中声明则为全局变量;
+			 *  2.num =1;
+			 * 
+			 * http://c.biancheng.net/view/5700.html
+			 * JavaScript调用函数的方式
+			 * function show(){console.log("show")}
+			 * function foo(x,y){return x+y}			 *
+			 * 1.使用小括号,有参数时，参数之间通过逗号进行分隔;			 *  
+			 *   show();
+			 *   foo(4,6);
+			 * 2.new 命令间接调用(在创建对象的过程中会激活并运行函数)
+			 *   new show();
+			 *   new foo(1,3);
+			 * 3.作为对象的方法调用
+			 *  var obj = {
+					value:0,
+					increment:function(){
+						this.value += typeof inc === 'number' ? inc :1;
+					}
+				}
+				obj.increment();
+				console.log(obj.value);
+				obj.increment(2);
+				console.log(obj.value);
+			 * 
+			 * 
+			 * 
+			 * 
+			 * 
+			 * 
+			 * 
+			 * 
+			 * jquery增加全局函数的方法
+			 *  1. $.foo = function(){
+			 * 	    console.log("全局函数");
+			 * 		}
+			 *     //调用
+			 *     $.foo();
+			 *  2.使用$.extend(object);
+			 *    $.extend({
+			 * 	     foo:function(){
+			 * 	      console.log("foo()");
+			 * 		 },
+			 *       bar:function(){
+			 * 	       console.log("bar");
+			 * 		 }
+			 *    })
+			 *    //调用
+			 *       $.foo();$.bar();
+			 * 3.使用命名空间
+			 *    myplugin = {
+			 * 	   show:function(){
+			 * 		console.log("这是一个使用命名空间创建的全局函数");
+			 *     }
+			 *    }
+			 *    //调用
+			 *       myplugin.show();
+			 * 
+			 * jquery对象级别的插件开发
+			 *  对象级别的插件开发需要如下的两种形式:
+			 *  1.$是形参，函数定义完成之后,把jQuery这个实参传递进去.立即调用执行。
+			 *    这样的好处是,我们在写jQuery插件时,也可以使用$这个别名,
+			 *    而不会与prototype引起冲突。
+			 *    ;(function ( $, window, document, undefined ){
+		 				$.fn.pluginName = function(){
+		 					//具体代码
+		 				}
+		          })(jQuery, window,document);
+		        2.
+		        ;(function ( $, window, document, undefined ){
+		        	    $.fn.extend({
+		        	    	pluginName:fuction(options,callback){
+		        	    		//具体代码
+		        	    	}
+		        	    })
+		 				$.fn.pluginName = function(){}
+		          })(jQuery, window,document);			 * 
+			 * https://www.cnblogs.com/yuqingfamily/p/5774994.html
+			 * ;(function ($,window,document,undefined){...})(jQuery,window,document);
+			 * 1.代码最前面的分号，可以防止多个文件压缩合并以为其他文件最后一行语句没加分号，而引起合并后语法错误;
+			 * 2.匿名函数(function(){})();由于Javascript执行表达式是从圆括号里面到外面，所以可以用圆括号强制执行声明的函数。
+			 * 避免函数体内和外部的变量冲突。
+			 * 3.$实参:$是jquery的简写，很多方法和类库也使用$,这里$接受jQuery对象，也是为了避免$变量冲突，保证插件可以正常运行。
+			 * 4.window, document实参分别接受window, document对象，window, document对象都是全局环境下的，
+			 *   而在函数体内的window, document其实是局部变量，不是全局的  window, document对象。
+			 *  这样做有个好处就是可以提高性能，减少作用域链的查询时间，如果你在函数体内需要多次调用window 或 document对象，
+			 *  这样把window 或document对象当作参数传进去，这样做是非常有必要的。当然如果你的插件用不到这两个对象，那么就不用传递这两个参数了。
+			 * 5.最后剩下一个undefined形参了，那么这个形参是干什么用的呢，看起来是有点多余。undefined在老一辈的浏览器是不被支持的，直接使用会报错，js框架要考虑到兼容性，
+			 *   因此增加一个形参undefined;
+			 * 6.如果传入jQuery对象的话，必须先引入JQuery，否则找不到jquery对象;
+			 * 
+			 * $.extend()
+			 * https://api.jquery.com/jQuery.extend/
+			 * $.extend(target,object1[,objectN])
+			 * 1.如果只向 $.extend(object1)提供了一个参数,意味着省略了目标参数,可以向 jQuery 命名空间添加新函数;
+			 * 2.如果向$.extend(object1,object2)提供了二个参数,object2中的参数会合并到object1中,object1将被修改;
+			 * 3.如果向$.extend(target,object1,object2)提供了三个参数,$.extend({},object1,object2),object2中的参数回合并到object1中,
+			 *   用一个空对象来作为目标对象合并,object1不会被修改;
+			 * $.extend([deep],target,object1[,objectN])
+			 *  1.默认情况下执行的合并不是递归的；如果第一个对象的属性本身是一个对象或数组，它将被第二个或后续对象中具有相同键的属性完全覆盖。
+			 *    这些值不会合并;
+			 *  2.$.extend(true, {}, object1,object2),通过传递true第一个函数参数，对象将被递归合并;
+			 *    注意：false不支持传递第一个参数;
+			 * 
+			 * JavaScript中this的指向问题
+			 *   https://www.cnblogs.com/pssp/p/5216085.html
+			 *   https://segmentfault.com/a/1190000010988807
+			 * 
+			 * FileReader 实现图片预览
+			 * https://blog.csdn.net/jackfrued/article/details/8967667
+			 * 使用H5提供的FileReader读取文件后显示到页面;
+			 *  1.HTML5定义了FileReader作为文件API的重要成员用于读取文件，根据W3C的定义，
+			 *    FileReader接口提供了读取文件的方法和包含读取结果的事件模型。
+			 *    var fr = new FileReader();
+			 *  2.FileReader的使用
+			 *    a.检测浏览器对FileReader的支持
+			 *       var file = window.FileReader;
+			 *    b.调用FileReader对象的方法
+			 *        readAsDataURL(file);
+			 *    c.处理事件
+			 *      FileReader 包含了一套完整的事件模型，用于捕获读取文件时的状态;
+			 *      fr.onload = function(e){var img = e.target.result;}
+			 *  
+			 * 图片缩放
+			 * https://www.jb51.net/article/185748.htm
+			 * context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+			 * img:规定要使用的图像、画布或视频;
+			 * sx:可选。开始剪切的 x 坐标位置。
+			 * sy:可选。开始剪切的 y 坐标位置。
+			 * swidth:可选。被剪切图像的宽度。
+			 * sheight:可选。被剪切图像的高度。
+			 * x:在画布上放置图像的 x 坐标位置。
+			 * y:在画布上放置图像的 y 坐标位置。
+			 * width:可选。要使用的图像的宽度。（伸展或缩小图像）
+			 * height:可选。要使用的图像的高度。（伸展或缩小图像）
+			 */
+			'use strict';;
+(function($, window, document, undefined) {
+	$.fn.uploadFile = function(options) {
+		var defaultOptions = {
+			input_file_wrap: "#uploadFile", //文件上传按钮的标识
+			img_origin_wrapper:".photo-orgin-wrap",
+			img_origin_wrap: ".orgin-photo", //原图
+			img_preview_wrap: ".pre-photo", //图片预览的标识
+			zoomInButton: "#zoomInButton", //放大
+			zoomOutButton: "#zoomOutButton", //缩小
+			minheight:184,
+			maxheight:2000,
+			ratio: 1, 
+			zoom_h:184,//图片缩放高度
+			image: new Image(), //图片必须给一个图片路径
+			state : {},
+		}
+		var currentOptions = $.extend(defaultOptions, options);
+		var ele = document.querySelector(currentOptions.img_origin_wrap);
+		var el = document.querySelector(currentOptions.img_origin_wrapper);
+        $(currentOptions.input_file_wrap).on("change", previewFile);
+		$(currentOptions.zoomInButton).on("click", zoomIn);
+		$(currentOptions.zoomOutButton).on("click",zoomOut);
+		function previewFile() {
+					var fr = new FileReader();
+					var files = $(currentOptions.input_file_wrap)[0].files;
+					fr.readAsDataURL(files[0]);
+					fr.onload = function(e) {
+						defaultOptions.image.src=e.target.result;
+						
+						var img = new Image();
+						    img.src = e.target.result;
+						img.onload = function(){
+					    	var width = img.width;
+					    	var height = img.height;
+					    	var w = width / height * currentOptions.zoom_h;
+					        var pw =(el.clientWidth - w) / 2;					        
+			                    ele.setAttribute('style',
+									'position: absolute; ' +
+									'width: ' + w + 'px; ' +
+									'height: ' +defaultOptions.zoom_h + 'px; ' +
+									'left: ' + pw + 'px; ' +
+									'top: ' + 0 + 'px; '
+								);					    	
+					    $(currentOptions.img_origin_wrap).attr("src", e.target.result);
+					    $(currentOptions.img_preview_wrap).attr("src", e.target.result);
+					   }
+						
+					}
+				}
+	   
+		function zoomIn() {
+					 var imgWidth = currentOptions.image.width;
+					var imgHeight = currentOptions.image.height;
+					var w = imgWidth / imgHeight * currentOptions.zoom_h;
+					var h = ele.clientHeight;	
+					if(h>currentOptions.maxheight){return;}
+					currentOptions.ratio *= 1.01;
+					setimg();
+				}
+		function zoomOut() {
+			        var imgWidth = currentOptions.image.width;
+					var imgHeight = currentOptions.image.height;
+					var w = imgWidth / imgHeight * currentOptions.zoom_h;
+					var h = ele.clientHeight;
+					if(h<=currentOptions.minheight){return;}
+					currentOptions.ratio *= 0.999;
+					setimg();
+				}
+		function setimg() {
+			//原图宽和高(真实width和heigth)
+			var imgWidth = currentOptions.image.width;
+			var imgHeight = currentOptions.image.height;
+			console.log("imgWidth: "+imgWidth+" imgHeight: "+imgHeight);
+			//缩放比例
+			var ratio = currentOptions.ratio;
+			
+			var width = imgWidth / imgHeight * currentOptions.zoom_h;
+			var height = currentOptions.zoom_h;	
+			//缩放后的高度和宽度				
+			  var w = parseInt(width) * ratio;
+			  var h = parseInt(height) * ratio;
+			   //缩放后图片在容器中的位置
+			var pw = (el.clientWidth - w) / 2;
+			var ph = (el.clientHeight - h) / 2;
+			//设置缩放后的图片的位置
+				ele.setAttribute('style',
+					'position: absolute; ' +
+					'width: ' + w + 'px; ' +
+					'height: ' + h + 'px; ' +
+					'left: ' + pw + 'px; ' +
+					'top: ' + 0 + 'px; '
+				);
+			console.log("w: " + w + " h: " + h + " pw: " + pw + " ph： " + ph);
+			
+		}
+		function getDataURL(){
+			var width = el.clientWidth,
+			    height = el.clientHeight,
+			    canvas = document.createElement("canvas"),
+			    dim = el.style.top,
+			    sx = 0,
+			    sy = 0,
+			    sw = parseInt(currentOptions.image.width),
+			    sh = parseInt(currentOptions.image.height),
+			    dx = 0,
+			    dy = 0,
+			    dw = 0,
+			    dh = 0;			    
+			canvas.width = width;
+            canvas.height = height;
+            var context = canvas.getContext("2d");
+			context.drawImage(currentOptions.image,sx,sy,sw,sh,dx,dy,dw,dh);
+			var imageData = canvas.toDataURL('image/png');
+			console.log(imageData);
+            return imageData;
+		}
+		
+	}
+})(jQuery, window, document);
+
+/*var myPlugin = function(options) {
+		var obj = {
+				show: function() {
+						console.log("show");
+					},
+					move:function(){
+						console.log("move");
+					}
+				},introduce = function(){
+					console.log("introdudce");
+				}
+				return obj;
+			}
+			var c = new myPlugin();
+			   c.show();
+			*/
+		</script>
+	</head>
+	<body>
+		<div class="wrapper-upload">
+			<div class="input-file-wrap">
+			   <input type="file" name="file" class="input-file" id="uploadFile">
+			</div>
+			<div class="image-wrap">
+			    <div class="photo-orgin-wrap"><img alt="原图" class="orgin-photo"></div>
+			    <div class="photo-preview-wrap"><img alt="图片预览" class="pre-photo"></div>
+			</div>
+			<div class="position-wrap">
+				<p>
+				  <span class="imagebox"> 
+					<img id="zoomInButton" class="zoomButton" src="../../img/scale/zoomIn.png" title="zoom in" alt="zoom in"> 
+					<img id="zoomOutButton" class="zoomButton" src="../../img/scale/zoomOut.png" title="zoom out" alt="zoom out">
+				  </span>
+				</p>
+				<p>
+		        <span class="positionButtonSpan">		
+					<map name="positionMap" class="positionMapClass">		
+						<area id="topPositionMap" shape="rect" coords="20,0,40,20" title="move up" alt="move up">
+		                <area id="leftPositionMap" shape="rect" coords="0,20,20,40" title="move left" alt="move left">
+						<area id="rightPositionMap" shape="rect" coords="40,20,60,40" title="move right" alt="move right">
+						<area id="bottomPositionMap" shape="rect" coords="20,40,40,60" title="move bottom" alt="move bottom">
+					</map>
+					<img src="../../img/scale/position.png" usemap="#positionMap">
+		         </span>
+
+             </p>
+				
+		    </div>
+			
+		</div>
+	</body>
+</html>

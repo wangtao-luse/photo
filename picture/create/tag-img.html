@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>通过img标签插入图片</title>
+		<!--
+        	作者：wwangtaoc11@163.com
+        	时间：2021-05-27
+        	描述：
+        	  a.单标签;
+			  b.行间元素，但默认inline-block效果,可以直接使用于盒子模型;
+			  c.<img>标签不能直接在网页中插入图像，而是指定一个链接图像的文件的地址，
+				因此<img>标签的创建是被引用图像的占位空间;
+			   属性：
+			    src 必须属性；指定图像链接路径;
+			    alt 必须属性;规定图像的替代文本（图片无法正常加载的时候起到替换文本的作用）
+			    title 鼠标滑过时显示的文字提示信息
+			    width 宽：（推荐使用css实现）
+			    height：高（推荐使用css实现）
+			  注意事项：
+			  a.widht和height不需要带单位，默认单位px;
+              b.如果图片指定了widht和高度（通常是图片的本身尺寸）页面加载的时候会保留指定尺寸;
+                如果没有指定，图片加载失败或出现问题时，img标签的占位空间无法确定，可能会破坏页面的布局；
+              c.遵循内容和样式的分离，css设定的width或height会优先于img标签中的widht和height;
+
+
+        -->
+	</head>
+	<body>
+		<img alt=""  src="../../img/avatar-1.jpg" />
+	</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)https://www.jq22.com/yanshi2273 -->
+<html style="padding-bottom: 54px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+
+    <title>jQuery支持图片放大缩小查看效果</title>
+    <meta name="description" content="e-smart-zoom-jquery.js插件页面上提供了两个按钮，可以让你的图片点击放大或者缩小当然，对于懒人来说，真是懒得点击那么你可以将鼠标悬停在图片上，滚动鼠标滚轮即可实现图片的放大或者缩小效果">
+    <meta name="keywords" content="图片缩放，放大，缩小，jquery插件，jquery">
+    <link rel="Shortcut icon" href="https://www.jq22.com/favicon.ico">
+    <link href="../../css/scale/demo.css" rel="stylesheet" media="all">
+    <!--[if IE]>
+			
+			<style type="text/css">			
+				li.purchase a {
+					padding-top: 5px;
+					background-position: 0px -4px;
+				}
+				
+				li.remove_frame a {
+					padding-top: 5px;
+					background-position: 0px -3px;
+				}						
+			</style>
+			
+		<![endif]-->
+
+    <style>
+        .fdad a{color:#000;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.fdad{top:66px;}.xgcj li{font-size:14px;line-height:20px;list-style-type:none;transition:all 1s ease 0s;border-radius:5px;}.xgcj li:hover{background-color:#e4e4e4;}.xgcj{background-color:rgba(255,255,255,.3);overflow-x:hidden;}.xgcj ul{padding:10px}.xgcj h3{line-height:30px;}.xgcj p{padding-left:20px;font-size:13px;display:none;}.xgcj span{font-family:"宋体";}.xgcj li:hover p{display:block;}
+    </style>
+    <script src="./jQuery支持图片放大缩小查看效果_files/f.txt"></script>
+    <script src="./jQuery支持图片放大缩小查看效果_files/osd.js.下载"></script>
+    <script src="./jQuery支持图片放大缩小查看效果_files/f(1).txt"></script>
+    <script src="./jQuery支持图片放大缩小查看效果_files/hm.js.下载"></script>
+    <script src="./jQuery支持图片放大缩小查看效果_files/f(2).txt" id="google_shimpl"></script>
+    <script type="text/javascript">
+        var txt = "https://www.jq22.com/demo/jQuery-zoom-150311223641";
+        window.g1 = txt.substr(0, 3);
+        window.g2 = txt.substr(0, 19);
+    </script>
+    <script src="../../js/pace.min.js" charset="gbk"></script>
+    <link href="../../css/scale/pace-theme-barber-shop.css" rel="stylesheet">
+    <script src="../../js/common/jquery-3.4.1.js.js"></script>
+    <script src="../../js/scale/jquery.qrcode.min.js1"></script>
+    <script type="text/javascript">
+        var dqfl = "媒体";
+        var theme_list_open = false;
+
+        $(document).ready(function () {
+            function fixHeight() {
+                var headerHeight = $("#switcher").height();
+                $("#iframe").attr("height", $(window).height() - 54 + "px");
+            }
+            $(window).resize(function () {
+                fixHeight();
+            }).resize();
+
+            $('.icon-monitor').addClass('active');
+
+            $(".icon-mobile-3").click(function () {
+                $("#by").css("overflow-y", "auto");
+                $('#iframe-wrap').removeClass().addClass('mobile-width-3');
+                $('.icon-tablet,.icon-mobile-1,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            });
+
+            $(".icon-mobile-2").click(function () {
+                $("#by").css("overflow-y", "auto");
+                $('#iframe-wrap').removeClass().addClass('mobile-width-2');
+                $('.icon-tablet,.icon-mobile-1,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            });
+               
+
+            $(".icon-mobile-1").click(function () {
+                $("#by").css("overflow-y", "auto");
+                $('#iframe-wrap').removeClass().addClass('mobile-width');
+                $('.icon-tablet,.icon-mobile,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            });
+
+            $(".icon-tablet").click(function () {
+                $("#by").css("overflow-y", "auto");
+                $('#iframe-wrap').removeClass().addClass('tablet-width');
+                $('.icon-tablet,.icon-mobile-1,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            });
+
+            $(".icon-monitor").click(function () {
+                $("#by").css("overflow-y", "hidden");
+                $('#iframe-wrap').removeClass().addClass('full-width');
+                $('.icon-tablet,.icon-mobile-1,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            });
+
+            if (dqfl.indexOf("APP模板") != -1) {
+                $("#by").css("overflow-y", "auto");
+                $('#iframe-wrap').removeClass().addClass('mobile-width-2');
+                $('.icon-tablet,.icon-mobile-1,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            }      
+        });
+    </script>
+    <script type="text/javascript">
+        function Responsive($a) {
+            if ($a == true) $("#Device").css("opacity", "100");
+            if ($a == false) $("#Device").css("opacity", "0");
+            $('#iframe-wrap').removeClass().addClass('full-width');
+            $('.icon-tablet,.icon-mobile-1,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+            $(this).addClass('active');
+            return false;
+        };
+    </script>
+<meta http-equiv="origin-trial" content="A+b/H0b8RPXNaJgaNFpO0YOFuGK6myDQXlwnJB3SwzvNMfcndat4DZYMrP4ClJIzYWo3/yP2S+8FTZ/lpqbPAAEAAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="A9ZgbRtm4pU3oZiuNzOsKcC8ppFSZdcjP2qYcdQrFKVzkmiWH1kdYY1Mi9x7G8+PS8HV9Ha9Cz0gaMdKsiVZIgMAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxL6oBxcpn5rQDPKSAs+d0oxNyJYq2/4esBUh3Yx5z8QfcLu+AU8iFCXYRcr/CEEfDnkxxLTsvXPJFQBxHfvkgMAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A9KPtG5kl3oLTk21xqynDPGQ5t18bSOpwt0w6kGa6dEWbuwjpffmdUpR3W+faZDubGT+KIk2do0BX2ca16x8qAcAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A3HucHUo1oW9s+9kIKz8mLkbcmdaj5lxt3eiIMp1Nh49dkkBlg1Fhg4Fd/r0vL69mRRA36YutI9P/lJUfL8csQoAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A0OysezhLoCRYomumeYlubLurZTCmsjTb087OvtCy95jNM65cfEsbajrJnhaGwiTxhz38ZZbm+UhUwQuXfVPTg0AAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="AxoOxdZQmIoA1WeAPDixRAeWDdgs7ZtVFfH2y19ziTgD1iaHE5ZGz2UdSjubkWvob9C5PrjUfkWi4ZSLgWk3Xg8AAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A7+rMYR5onPnACrz+niKSeFdH3xw1IyHo2AZSHmxrofRk9w4HcQPMYcpBUKu6OQ6zsdxf4m/vqa6tG6Na4OLpAQAAAB4eyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AwfG8hAcHnPa/kJ1Co0EvG/K0F9l1s2JZGiDLt2mhC3QI5Fh4qmsmSwrWObZFbRC9ieDaSLU6lHRxhGUF/i9sgoAAACBeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiSW50ZXJlc3RDb2hvcnRBUEkiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AwQ7dCmHkvR6FuOFxAuNnktYSQrGbL4dF+eBkrwNLALc69Wr//PnO1yzns3pjUoCaYbKHtVcnng2hU+8OUm0PAYAAACHeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiSW50ZXJlc3RDb2hvcnRBUEkiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AysVDPGQTLD/Scn78x4mLwB1tMfje5jwUpAAzGRpWsr1NzoN7MTFhT3ClmImi2svDZA7V6nWGIV8YTPsSRTe0wYAAACHeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiSW50ZXJlc3RDb2hvcnRBUEkiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9">
+<link rel="preload" href="./jQuery支持图片放大缩小查看效果_files/f(3).txt" as="script">
+<script type="text/javascript" src="./jQuery支持图片放大缩小查看效果_files/f(3).txt"></script>
+<link rel="preload" href="./jQuery支持图片放大缩小查看效果_files/f(3).txt" as="script">
+<script type="text/javascript" src="./jQuery支持图片放大缩小查看效果_files/f(3).txt"></script></head>
+<body id="by" style="overflow-y: hidden" class="  pace-done" aria-hidden="false">
+	<div class="pace  pace-inactive">
+		<div class="pace-progress" data-progress-text=" 100%" data-progress="99" style="width: 100%;">
+  		<div class="pace-progress-inner"></div>
+	</div>
+<div class="pace-activity"></div></div>
+    <div id="switcher">
+        <div class="center">
+            <ul>
+                <li class="logoTop" id="sj2"><a href="https://www.jq22.com/jquery-info2273">jQuery支持图片放大缩小查看效果</a></li>
+                <div id="Device">
+                    <li class="device-monitor"><a href="javascript:">
+                        <div class="icon-monitor active">
+                        </div>
+                    </a></li>
+                    <li class="device-mobile"><a href="javascript:">
+                        <div class="icon-tablet">
+                        </div>
+                    </a></li>
+                    <li class="device-mobile"><a href="javascript:">
+                        <div class="icon-mobile-1">
+                        </div>
+                    </a></li>
+                    <li class="device-mobile-2"><a href="javascript:">
+                        <div class="icon-mobile-2">
+                        </div>
+                    </a></li>
+                    <li class="device-mobile-3"><a href="javascript:">
+                        <div class="icon-mobile-3">
+                        </div>
+                    </a></li>
+                </div>
+                <li class="top2" id="sj"><a href="https://www.jq22.com/yanshi2273#">手机二维码预览</a><div class="vm">
+                    <div id="output"><canvas width="150" height="150"></canvas></div>
+                    <p style="color: #808080">扫一扫，直接在手机上打开</p>
+                </div>
+                </li>
+                
+
+                <script>
+                    jQuery('#output').qrcode({ width: 150, height: 150, text: window.location.href });
+                </script>
+                <li class="remove_frame" style="display:n"><a href="https://www.jq22.com/demo/jQuery-zoom-150311223641" title="移除框架"></a></li>
+
+            </ul>
+        </div>
+    </div>
+    <div id="iframe-wrap">
+        <iframe id="iframe" src="jQuery-zoom-150311223641.html" frameborder="0" width="100%" height="644px"></iframe>
+    </div>
+
+    <div class="fdad" style="display: none;">
+        <div class="fdl">Advertisement</div>
+        <div class="fdr">x</div>
+        <div class="fdadnr">
+           <script async="" src="./jQuery支持图片放大缩小查看效果_files/f(4).txt"></script>
+            <!-- 336x280 -->
+            <ins class="adsbygoogle" style="display:inline-block;width:336px;height:280px" data-ad-client="ca-pub-2935286260943234" data-ad-slot="6063645905" data-adsbygoogle-status="done" data-ad-status="filled"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_0_anchor" style="display:block;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px;background-color:transparent;"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:336px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="336" height="280" frameborder="0" src="./jQuery支持图片放大缩小查看效果_files/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" allow="conversion-measurement &#39;src&#39;" data-google-container-id="a!1" data-google-query-id="CP7GwaeL6fACFZWjlgodhxAN8w" data-load-complete="true"></iframe></ins></ins></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script> 
+        <div class="xgcj">
+            <ul>
+                <div style="width:100%">
+                    <div style="float:left"><h3>相关插件</h3></div>
+                    <div style="clear: left;"></div>
+                </div>
+                
+                        <li>
+                            <a href="https://www.jq22.com/jquery-info621"><span>&gt;</span> CSS3三角形图片展示</a>
+                            <p>CSS3三角形图片展示</p>
+                        </li>
+                    
+                        <li>
+                            <a href="https://www.jq22.com/jquery-info15184"><span>&gt;</span> jQuery圆形转动切换文字</a>
+                            <p>jQuery实现头像和文字的切换，并且伴随着圆环的转动，很有趣的效果</p>
+                        </li>
+                    
+                        <li>
+                            <a href="https://www.jq22.com/jquery-info20755"><span>&gt;</span> 原生js放大镜（原创）</a>
+                            <p>一个普通的图片放大镜功能，放大倍数可自定义</p>
+                        </li>
+                    
+                        <li>
+                            <a href="https://www.jq22.com/jquery-info684"><span>&gt;</span> jQuery背景墙聚光灯效果代码</a>
+                            <p>jQuery背景墙聚光灯效果代码</p>
+                        </li>
+                    
+                        <li>
+                            <a href="https://www.jq22.com/jquery-info19534"><span>&gt;</span> jQuery淘宝图片放大镜（原创）</a>
+                            <p>jQuery淘宝图片放大镜,兼容ie7</p>
+                        </li>
+                    
+            </ul>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+                $(document).ready(function () {
+                    $(".fdr").click(function () {
+                        $(".fdad").hide();
+                    });
+                });
+    </script>
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?b3a3fc356d0af38b811a0ef8d50716b8";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+</div><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;" data-ad-status="unfilled"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_1_anchor" style="display:block;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;"><iframe id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" frameborder="0" src="./jQuery支持图片放大缩小查看效果_files/ads(1).html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" allow="conversion-measurement &#39;src&#39;" data-google-container-id="a!2" data-load-complete="true"></iframe></ins></ins></ins><iframe id="google_osd_static_frame_7289964166424" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./jQuery支持图片放大缩小查看效果_files/saved_resource.html"></iframe><iframe src="./jQuery支持图片放大缩小查看效果_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body><iframe id="google_esf" name="google_esf" src="./jQuery支持图片放大缩小查看效果_files/zrt_lookup.html" style="display: none;"></iframe><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important; width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; clear: none !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; position: fixed !important; vertical-align: baseline !important; visibility: visible !important; z-index: 2147483647 !important; background-color: transparent;" aria-hidden="true" data-ad-status="filled" data-vignette-loaded="true"><ins id="aswift_2_expand" style="display: inline-table !important; border: none !important; height: 100vh !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; width: 100vw !important; background-color: transparent !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_2_anchor" style="display: block !important; border: none !important; height: 100vh !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; width: 100vw !important; background-color: transparent !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;"><iframe id="aswift_2" name="" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="" height="" frameborder="0" src="./jQuery支持图片放大缩小查看效果_files/zrt_lookup(1).html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" allow="conversion-measurement &#39;src&#39;" style="width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; position: absolute !important; clear: none !important; display: inline !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; vertical-align: baseline !important; visibility: visible !important; z-index: auto !important;" data-google-container-id="a!3" data-google-query-id="CKO-wqeL6fACFVOzlgodPdsDGw" data-load-complete="true"></iframe></ins></ins></ins></html>

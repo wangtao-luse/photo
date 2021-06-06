@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>缩放</title>
+		<!--
+        	作者：wwangtaoc11@163.com
+        	时间：2021-05-27
+        	描述：
+        	1.API文档:
+        	  https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader/FileReader
+        	2.Jquery对象只能调用jquery对象的属性和方法,javaScript只能调用javaScript对象的属性和方法;
+        	   $("**")[0]:将jquery对象($("**"))转为javaScript对象;
+        	3.方法
+        	   readAsDataURL(); 
+        	          该方法 一旦完成，result属性中将包含一个data:URL格式的Base64字符串以表示所读取文件的内容;
+        	4.事件处理：
+        	   onload:在读取操作完成时触发
+        -->
+        <script type="text/javascript" src="../../js/common/jquery-3.4.1.js.js" ></script>
+        <script src="../../js/scale/e-smart-zoom-jquery.min.js"></script>
+        <script>
+        	//预览
+        	function fileReader(){
+        		try{
+        			//1.构建FileReader对象
+        		var reader = new FileReader();
+        		//2.Jquery对象转javaScript对象
+        		var file = $("input[type='file']")[0].files[0];
+        		//3.读取文件内容
+					reader.readAsDataURL(file);
+					reader.onload = function(e){
+						var path = e.target.result;
+						$(".pre-photo").attr("src",path);
+					}
+        		} catch (e) {
+					throw new Error('browser doest not support FileReader')
+				}
+        		
+        	}
+        	
+        	function zoom(){
+        		
+        	}
+        	//缩放
+        	$(function(){
+        		$('#imageFullScreen').smartZoom({'containerClass':'zoomableContainer'});
+        		$('#zoomInButton,#zoomOutButton').bind("click", zoomButtonClickHandler);
+        		function zoomButtonClickHandler(e){
+		            var scaleToAdd = 0.8;
+		            if(e.target.id == 'zoomOutButton')
+		                scaleToAdd = -scaleToAdd;
+		            $('#imageFullScreen').smartZoom('zoom', scaleToAdd);
+		
+		        } 
+        	})
+        </script>
+        <style>
+        	.zoomableContainer{
+        	     width: 300px;
+        		height: 300px;
+        	}
+        </style>
+	</head>
+	<body>
+		<input type="file" name="file" onchange="fileReader()" />
+		<div class="zoomableContainer" style="border: 1px solid red;">
+		    <img alt="" class="pre-photo" id="imageFullScreen" src="../../img/avatar-1.jpg" style="transition: all 0s ease-out 0s; transform: translate3d(160px, 2.5px, 0px) scale3d(0.44, 0.44, 1); cursor: default; transform-origin: 0px 0px; visibility: visible;">
+		</div>
+		<div id="positionButtonDiv">
+			<input type="button" value="+" id="zoomInButton"/>
+		    <input type="button" value="-" id="zoomOutButton" />
+		</div>
+		
+	</body>
+</html>

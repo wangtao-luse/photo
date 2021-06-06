@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>缩放</title>
+		<!--
+        	作者：wwangtaoc11@163.com
+        	时间：2021-05-27
+        	描述：
+        	1.API文档:
+        	  https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader/FileReader
+        	2.Jquery对象只能调用jquery对象的属性和方法,javaScript只能调用javaScript对象的属性和方法;
+        	   $("**")[0]:将jquery对象($("**"))转为javaScript对象;
+        	3.方法
+        	   readAsDataURL(); 
+        	          该方法 一旦完成，result属性中将包含一个data:URL格式的Base64字符串以表示所读取文件的内容;
+        	4.事件处理：
+        	   onload:在读取操作完成时触发
+        -->
+       <script type="text/javascript" src="../../js/common/jquery-3.4.1.js.js" ></script>
+       <script src="../../js/cropbox/cropbox.js"></script>
+       <script src="../../js/cropbox/jquery.qrcode.min.js"></script>
+        <script>
+        	//预览
+        	function fileReader(){
+        		try{
+        			//1.构建FileReader对象
+        		var reader = new FileReader();
+        		//2.Jquery对象转javaScript对象
+        		var file = $("input[type='file']")[0].files[0];
+        		//3.读取文件内容
+					reader.readAsDataURL(file);
+					reader.onload = function(e){
+						var path = e.target.result;
+						$(".pre-photo").attr("src",path);
+					}
+        		} catch (e) {
+					throw new Error('browser doest not support FileReader')
+				}
+        		
+        	}
+        	
+        	
+    window.onload = function() {
+        var options =
+        {
+            imageBox: '.imageBox',
+            thumbBox: '.thumbBox',
+            spinner: '.spinner',
+            imgSrc: 'tx.png'
+        }
+        var cropper = new cropbox(options);
+        document.querySelector('.input-file-avatar').addEventListener('change', function(){
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                options.imgSrc = e.target.result;
+                cropper = new cropbox(options);
+            }
+            reader.readAsDataURL(this.files[0]);
+            this.files = [];
+        })
+        document.querySelector('#btnCrop').addEventListener('click', function(){
+            var img = cropper.getDataURL();
+            document.querySelector('.cropped').innerHTML += '<img src="'+img+'">';
+        })
+        document.querySelector('#btnZoomIn').addEventListener('click', function(){
+            cropper.zoomIn();
+        })
+        document.querySelector('#btnZoomOut').addEventListener('click', function(){
+            cropper.zoomOut();
+        })
+    };
+        </script>
+       <style>
+       	.imageBox {
+    position: relative;
+    height: 400px;
+    width: 400px;
+    border: 1px solid #aaa;
+    background: #fff;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    cursor: move;
+}
+       	.imageBox .thumbBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    margin-top: -100px;
+    margin-left: -100px;
+    box-sizing: border-box;
+    border: 1px solid rgb(102, 102, 102);
+    box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+    background: none repeat scroll 0% 0% transparent;
+}
+.cropped img{
+	border-radius: 50%;
+}
+
+       </style>
+	</head>
+	<body>
+		<input type="file" name="file"  id="file" class="input-file-avatar" />
+		<div class="imageBox" style="border: 1px solid red;">
+			 <div class="thumbBox"></div>
+			 <div class="spinner" style="display: none;">Loading...</div>
+		   
+		</div>
+		<div id="positionButtonDiv">
+			<input type="button" value="+" id="btnZoomIn"/>
+		    <input type="button" value="-" id="btnZoomOut" /> 
+		    <input type="button" value="crop" id="btnCrop" />
+		</div>
+		 <img alt="" class="pre-photo" src="" >
+		<div class="cropped"></div>
+	</body>
+</html>

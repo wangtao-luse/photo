@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>通过设置背景来插入图片</title>
+		<!--
+        	作者：wwangtaoc11@163.com
+        	时间：2021-05-27
+        	描述：
+        	background 复合属性;
+		        a.一个声明设置所有的属性
+		        b.值得顺序依次为
+		         background-color  background-image   background-repeat  background-attachment  background-position
+		         以上属性无需全部使用，可以按照页面的时间需要使用,没有设定的属性的值使用默认值；
+		        建议使用符合属性进行背景的定义，不仅代码高效，针对老版本浏览器兼容性也更好;
+   		 -->
+		<style>
+			.avatar-box{
+				height: 150px;
+				width: 150px;
+				background: url(../../img/avatar-1.jpg) no-repeat;
+			}
+		</style>
+	</head>
+	<body>
+	  <div class="avatar-box">背景图片</div>
+	</body>
+</html>

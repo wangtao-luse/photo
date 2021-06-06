@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>使用浏览器的原生对象URL实现读取文件</title>
+		<script type="text/javascript" src="../../js/common/jquery-3.4.1.js.js" ></script>
+		<script>
+			function previewImg(){
+				try {
+				var file = $("input[type='file']")[0].files[0];
+			    var url = window.URL.createObjectURL(file);	
+			    $(".pre-photo").attr("src",url);
+			   }catch (e) {
+					throw new Error('browser doest not support URL')
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<input type="file" name="file" onchange="previewImg()" />
+		<img alt="" class="pre-photo">
+	</body>
+</html>

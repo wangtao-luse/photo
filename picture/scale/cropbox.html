@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<!-- saved from url=(0032)https://www.jq22.com/yanshi21809 -->
+<html style="padding-bottom: 54px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+
+    <title>jQuery图像裁剪插件cropbox.js</title>
+    <meta name="description" content="cropbox.js一个轻量级图像在线剪裁的jQuery和JavaScript 库。">
+    <meta name="keywords" content="cropbox.js,jQuery图像裁剪插件,头像裁剪，cropbox.js是什么，cropbox.js下载，cropbox.js使用方法，jquery,jquery插件">
+    <link rel="Shortcut icon" href="https://www.jq22.com/favicon.ico">
+    <link href="../../css/cropbox/demo.css" rel="stylesheet" media="all">
+    <!--[if IE]>
+			
+			<style type="text/css">			
+				li.purchase a {
+					padding-top: 5px;
+					background-position: 0px -4px;
+				}
+				
+				li.remove_frame a {
+					padding-top: 5px;
+					background-position: 0px -3px;
+				}						
+			</style>
+			
+		<![endif]-->
+
+    <style>
+        .fdad a{color:#000;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.fdad{top:66px;}.xgcj li{font-size:14px;line-height:20px;list-style-type:none;transition:all 1s ease 0s;border-radius:5px;}.xgcj li:hover{background-color:#e4e4e4;}.xgcj{background-color:rgba(255,255,255,.3);overflow-x:hidden;}.xgcj ul{padding:10px}.xgcj h3{line-height:30px;}.xgcj p{padding-left:20px;font-size:13px;display:none;}.xgcj span{font-family:"宋体";}.xgcj li:hover p{display:block;}
+    </style>
+    <script src="./jQuery图像裁剪插件cropbox.js_files/osd.js.下载"></script><script src="./jQuery图像裁剪插件cropbox.js_files/f.txt"></script><script src="./jQuery图像裁剪插件cropbox.js_files/f(1).txt" id="google_shimpl"></script><script src="./jQuery图像裁剪插件cropbox.js_files/hm.js.下载"></script><script type="text/javascript">
+        var txt = "https://www.jq22.com/demo/cropbox201906270027";
+        window.g1 = txt.substr(0, 3);
+        window.g2 = txt.substr(0, 19);
+    </script>
+    <script src="./jQuery图像裁剪插件cropbox.js_files/pace.min.js.下载" charset="gbk"></script>
+    <link href="./jQuery图像裁剪插件cropbox.js_files/pace-theme-barber-shop.css" rel="stylesheet">
+    <script src="../../js/common/jquery-3.4.1.js.js"></script><script src="./jQuery图像裁剪插件cropbox.js_files/jquery.min.js.下载"></script>
+    <script src="../../js/cropbox/jquery.qrcode.min.js"></script>
+    <script type="text/javascript">
+        var dqfl = "媒体";
+        var theme_list_open = false;
+
+        $(document).ready(function () {
+            function fixHeight() {
+                var headerHeight = $("#switcher").height();
+                $("#iframe").attr("height", $(window).height() - 54 + "px");
+            }
+            $(window).resize(function () {
+                fixHeight();
+            }).resize();
+
+            $('.icon-monitor').addClass('active');
+
+            $(".icon-mobile-3").click(function () {
+                $("#by").css("overflow-y", "auto");
+                $('#iframe-wrap').removeClass().addClass('mobile-width-3');
+                $('.icon-tablet,.icon-mobile-1,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            });
+
+            $(".icon-mobile-2").click(function () {
+                $("#by").css("overflow-y", "auto");
+                $('#iframe-wrap').removeClass().addClass('mobile-width-2');
+                $('.icon-tablet,.icon-mobile-1,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            });
+               
+
+            $(".icon-mobile-1").click(function () {
+                $("#by").css("overflow-y", "auto");
+                $('#iframe-wrap').removeClass().addClass('mobile-width');
+                $('.icon-tablet,.icon-mobile,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            });
+
+            $(".icon-tablet").click(function () {
+                $("#by").css("overflow-y", "auto");
+                $('#iframe-wrap').removeClass().addClass('tablet-width');
+                $('.icon-tablet,.icon-mobile-1,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            });
+
+            $(".icon-monitor").click(function () {
+                $("#by").css("overflow-y", "hidden");
+                $('#iframe-wrap').removeClass().addClass('full-width');
+                $('.icon-tablet,.icon-mobile-1,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            });
+
+            if (dqfl.indexOf("APP模板") != -1) {
+                $("#by").css("overflow-y", "auto");
+                $('#iframe-wrap').removeClass().addClass('mobile-width-2');
+                $('.icon-tablet,.icon-mobile-1,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            }      
+        });
+    </script>
+    <script type="text/javascript">
+        function Responsive($a) {
+            if ($a == true) $("#Device").css("opacity", "100");
+            if ($a == false) $("#Device").css("opacity", "0");
+            $('#iframe-wrap').removeClass().addClass('full-width');
+            $('.icon-tablet,.icon-mobile-1,.icon-monitor,.icon-mobile-2,.icon-mobile-3').removeClass('active');
+            $(this).addClass('active');
+            return false;
+        };
+    </script>
+<meta http-equiv="origin-trial" content="A+b/H0b8RPXNaJgaNFpO0YOFuGK6myDQXlwnJB3SwzvNMfcndat4DZYMrP4ClJIzYWo3/yP2S+8FTZ/lpqbPAAEAAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="A9ZgbRtm4pU3oZiuNzOsKcC8ppFSZdcjP2qYcdQrFKVzkmiWH1kdYY1Mi9x7G8+PS8HV9Ha9Cz0gaMdKsiVZIgMAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxL6oBxcpn5rQDPKSAs+d0oxNyJYq2/4esBUh3Yx5z8QfcLu+AU8iFCXYRcr/CEEfDnkxxLTsvXPJFQBxHfvkgMAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A9KPtG5kl3oLTk21xqynDPGQ5t18bSOpwt0w6kGa6dEWbuwjpffmdUpR3W+faZDubGT+KIk2do0BX2ca16x8qAcAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A3HucHUo1oW9s+9kIKz8mLkbcmdaj5lxt3eiIMp1Nh49dkkBlg1Fhg4Fd/r0vL69mRRA36YutI9P/lJUfL8csQoAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A0OysezhLoCRYomumeYlubLurZTCmsjTb087OvtCy95jNM65cfEsbajrJnhaGwiTxhz38ZZbm+UhUwQuXfVPTg0AAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="AxoOxdZQmIoA1WeAPDixRAeWDdgs7ZtVFfH2y19ziTgD1iaHE5ZGz2UdSjubkWvob9C5PrjUfkWi4ZSLgWk3Xg8AAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A7+rMYR5onPnACrz+niKSeFdH3xw1IyHo2AZSHmxrofRk9w4HcQPMYcpBUKu6OQ6zsdxf4m/vqa6tG6Na4OLpAQAAAB4eyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AwfG8hAcHnPa/kJ1Co0EvG/K0F9l1s2JZGiDLt2mhC3QI5Fh4qmsmSwrWObZFbRC9ieDaSLU6lHRxhGUF/i9sgoAAACBeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiSW50ZXJlc3RDb2hvcnRBUEkiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AwQ7dCmHkvR6FuOFxAuNnktYSQrGbL4dF+eBkrwNLALc69Wr//PnO1yzns3pjUoCaYbKHtVcnng2hU+8OUm0PAYAAACHeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiSW50ZXJlc3RDb2hvcnRBUEkiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AysVDPGQTLD/Scn78x4mLwB1tMfje5jwUpAAzGRpWsr1NzoN7MTFhT3ClmImi2svDZA7V6nWGIV8YTPsSRTe0wYAAACHeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiSW50ZXJlc3RDb2hvcnRBUEkiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><link rel="preload" href="./jQuery图像裁剪插件cropbox.js_files/f(2).txt" as="script"><script type="text/javascript" src="./jQuery图像裁剪插件cropbox.js_files/f(2).txt"></script></head>
+<body id="by" style="overflow-y: hidden" class="  pace-done"><div class="pace  pace-inactive"><div class="pace-progress" data-progress-text=" 100%" data-progress="99" style="width: 100%;">
+  <div class="pace-progress-inner"></div>
+</div>
+<div class="pace-activity"></div></div>
+    <div id="switcher">
+        <div class="center">
+            <ul>
+                <li class="logoTop" id="sj2"><a href="https://www.jq22.com/jquery-info21809">jQuery图像裁剪插件cropbox.js</a></li>
+                <div id="Device">
+                    <li class="device-monitor"><a href="javascript:">
+                        <div class="icon-monitor active">
+                        </div>
+                    </a></li>
+                    <li class="device-mobile"><a href="javascript:">
+                        <div class="icon-tablet">
+                        </div>
+                    </a></li>
+                    <li class="device-mobile"><a href="javascript:">
+                        <div class="icon-mobile-1">
+                        </div>
+                    </a></li>
+                    <li class="device-mobile-2"><a href="javascript:">
+                        <div class="icon-mobile-2">
+                        </div>
+                    </a></li>
+                    <li class="device-mobile-3"><a href="javascript:">
+                        <div class="icon-mobile-3">
+                        </div>
+                    </a></li>
+                </div>
+                <li class="top2" id="sj"><a href="https://www.jq22.com/yanshi21809#">手机二维码预览</a><div class="vm">
+                    <div id="output"><canvas width="150" height="150"></canvas></div>
+                    <p style="color: #808080">扫一扫，直接在手机上打开</p>
+                </div>
+                </li>
+                
+
+                <script>
+                    jQuery('#output').qrcode({ width: 150, height: 150, text: window.location.href });
+                </script>
+                <li class="remove_frame" style="display:n"><a href="https://www.jq22.com/demo/cropbox201906270027" title="移除框架"></a></li>
+
+            </ul>
+        </div>
+    </div>
+    <div id="iframe-wrap">
+        <iframe id="iframe" src="cropbox201906270027.html" frameborder="0" width="100%" height="644px"></iframe>
+    </div>
+
+    <div class="fdad">
+        <div class="fdl">Advertisement</div>
+        <div class="fdr">x</div>
+        <div class="fdadnr">
+           <script async="" src="./jQuery图像裁剪插件cropbox.js_files/f(3).txt"></script>
+            <!-- 336x280 -->
+            <ins class="adsbygoogle" style="display:inline-block;width:336px;height:280px" data-ad-client="ca-pub-2935286260943234" data-ad-slot="6063645905" data-adsbygoogle-status="done" data-ad-status="filled"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_0_anchor" style="display:block;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px;background-color:transparent;"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:336px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="336" height="280" frameborder="0" src="./jQuery图像裁剪插件cropbox.js_files/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" allow="conversion-measurement &#39;src&#39;" data-google-container-id="a!1" data-google-query-id="CNWc8_qx6fACFTDGTAId8asFrA" data-load-complete="true"></iframe></ins></ins></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script> 
+        <div class="xgcj">
+            <ul>
+                <div style="width:100%">
+                    <div style="float:left"><h3>相关插件</h3></div>
+                    <div style="clear: left;"></div>
+                </div>
+                
+                        <li>
+                            <a href="https://www.jq22.com/jquery-info12909"><span>&gt;</span> canvas图片+文字合成</a>
+                            <p>canvas图片+文字合成，实现照片合成效果，界面有点丑但是功能OK的。</p>
+                        </li>
+                    
+                        <li>
+                            <a href="https://www.jq22.com/jquery-info648"><span>&gt;</span> jQuery放大镜插件jqzoom.js</a>
+                            <p>jQuery放大镜插件jqzoom.js</p>
+                        </li>
+                    
+                        <li>
+                            <a href="https://www.jq22.com/jquery-info21277"><span>&gt;</span> 二维码生成插件qrcode.js</a>
+                            <p>二维码生成插件qrcode.js，在此插件基础上添加了logo图片功能和对中文的支持，无需对中文转码可直接支持生成中文网址二维码</p>
+                        </li>
+                    
+                        <li>
+                            <a href="https://www.jq22.com/jquery-info20667"><span>&gt;</span> jQuery图片合成插件</a>
+                            <p>上传背景图，主图1，主图2，主图3，合成一张图片</p>
+                        </li>
+                    
+                        <li>
+                            <a href="https://www.jq22.com/jquery-info2480"><span>&gt;</span> html5前端图片压缩</a>
+                            <p>html5前端图片压缩</p>
+                        </li>
+                    
+            </ul>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+                $(document).ready(function () {
+                    $(".fdr").click(function () {
+                        $(".fdad").hide();
+                    });
+                });
+    </script>
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?b3a3fc356d0af38b811a0ef8d50716b8";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+</div><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;" data-ad-status="unfilled"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_1_anchor" style="display:block;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;"><iframe id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" frameborder="0" src="./jQuery图像裁剪插件cropbox.js_files/ads(1).html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" allow="conversion-measurement &#39;src&#39;" data-google-container-id="a!2" data-load-complete="true"></iframe></ins></ins></ins><iframe id="google_osd_static_frame_1064967371975" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./jQuery图像裁剪插件cropbox.js_files/saved_resource(1).html"></iframe><iframe src="./jQuery图像裁剪插件cropbox.js_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body><iframe id="google_esf" name="google_esf" src="./jQuery图像裁剪插件cropbox.js_files/zrt_lookup.html" style="display: none;"></iframe></html>
