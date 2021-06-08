@@ -84,14 +84,17 @@
 			console.log(obj.value);
 			obj.increment(2);
 			console.log(obj.value);*/
+			
+			$(document).mousedown(function(e){
+				//console.log("pageX: "+e.pageX+" pageY: "+e.pageY);
+				//console.log("clientX: "+e.clientX+" clientY: "+e.clientY)
+			})
 		</script>
 		<script>
 			/**
-			 * w=1920,h=1200;
-			 * W=x,   H=184,
-			 * w/h=W/H
-			 * W=w/h*H
-			 * 
+			 * w=268,h=151;
+			 *  w/184=268/151
+			 * 326.56
 			 
 			 * 
 			 * 
@@ -252,128 +255,247 @@
 			 * y:在画布上放置图像的 y 坐标位置。
 			 * width:可选。要使用的图像的宽度。（伸展或缩小图像）
 			 * height:可选。要使用的图像的高度。（伸展或缩小图像）
+			 * 
+			 * //鼠标相关事件
+			 * mousedown
+			 *   onmousedown事件会在鼠标按键被按下时发生;
+			 * mousemove
+			 *   鼠标指针在指定的元素中移动时，就会发生 mousemove 事件;
+			 * mouseup
+			 *   当鼠标指针移动到元素上方，并松开鼠标左键时;
+			 * 相关属性：
+			 * https://blog.csdn.net/qq_40990854/article/details/88925460
+			 * pageX,pageY：相对于浏览器中完全呈现内容区域的左上角,
+			 *              此参考点位于左上角的URL栏和后退按钮下方,
+			 * 				如果在页面中嵌入了嵌入的可滚动页面并且用户移动滚动条，
+			 *              则实际上可以改变位置;
+			 * clientX,clientY:对于浏览器窗口的内容区域（视口）的左上边缘。
+			 *                即使用户从浏览器中移动滚动条，此点也不会移动。
+			 * 				    以浏览器左上顶角为原点,定位x,y轴;
+			 * 
+			 * https://blog.csdn.net/qq_42089654/article/details/80515916
+			 * clientWidth: 
+			 *     clientWidth的实际宽度=width+左右padding
+			 * clientHeight:
+			 *     clientHeight的实际高度=height+上下padding
+			 * 
+			 *https://www.w3school.com.cn/jquery/css_offset.asp
+			 *http://w3c0.com/jquery/136968
+			 * offset() 
+			 *   jquery的offset方法返回或设置匹配元素相对于文档的偏移（位置），
+			 *    只对可见元素有效
 			 */
-			'use strict';;
+'use strict';
 (function($, window, document, undefined) {
 	$.fn.uploadFile = function(options) {
 		var defaultOptions = {
-			input_file_wrap: "#uploadFile", //文件上传按钮的标识
-			img_origin_wrapper:".photo-orgin-wrap",
-			img_origin_wrap: ".orgin-photo", //原图
-			img_preview_wrap: ".pre-photo", //图片预览的标识
-			zoomInButton: "#zoomInButton", //放大
-			zoomOutButton: "#zoomOutButton", //缩小
-			minheight:184,
-			maxheight:2000,
-			ratio: 1, 
-			zoom_h:184,//图片缩放高度
+			input_file_wrap: "#uploadFile", //文件上传按钮的标识 必须
+			img_origin_wrapper: ".photo-orgin-wrap", //必须
+			img_origin_wrap: ".orgin-photo", //原图 必须
+			img_preview_wrap: ".pre-photo", //图片预览的标识 必须
+			zoomInButton: "#zoomInButton", //放大 必须
+			zoomOutButton: "#zoomOutButton", //缩小 必须
+			minheight: 184, //缩放时图片的最小高度
+			maxheight: 2000, //缩放图片的最大高度 
+			iwidth:150,//图片最小宽度
+			iheight:150,//图片最小高度
+			ratio: 1, //图片缩放比例
+			zoom_h: 184, //图片默认缩放高度
 			image: new Image(), //图片必须给一个图片路径
-			state : {},
+			state: {},
 		}
 		var currentOptions = $.extend(defaultOptions, options);
 		var ele = document.querySelector(currentOptions.img_origin_wrap);
 		var el = document.querySelector(currentOptions.img_origin_wrapper);
-        $(currentOptions.input_file_wrap).on("change", previewFile);
+		$(currentOptions.input_file_wrap).on("change", previewFile);
 		$(currentOptions.zoomInButton).on("click", zoomIn);
-		$(currentOptions.zoomOutButton).on("click",zoomOut);
+		$(currentOptions.zoomOutButton).on("click", zoomOut);
+		attachEvent(ele, "mousedown", mousedown);
+		attachEvent(ele, "mousemove", mousemove);
+		attachEvent(ele, "mouseup", mouseup);
+		attachEvent(ele, "mouseleave", mouseup);
+		/*	$(currentOptions.img_origin_wrap).on("mousedown",mousedown);
+			$(currentOptions.img_origin_wrap).on("mousemove",mousemove);
+			$(document.body).on("mouseup",mouseup);*/
+		attachEvent(ele, 'DOMNodeRemoved', function() {
+			detachEvent(document.body, 'DOMNodeRemoved', mouseup)
+		});
+		var mousewheel = (/Firefox/i.test(navigator.userAgent)) ? 'DOMMouseScroll' : 'mousewheel';
+		$(currentOptions.img_origin_wrap).on(mousewheel, zoomImage);
+
 		function previewFile() {
-					var fr = new FileReader();
-					var files = $(currentOptions.input_file_wrap)[0].files;
-					fr.readAsDataURL(files[0]);
-					fr.onload = function(e) {
-						defaultOptions.image.src=e.target.result;
-						
-						var img = new Image();
-						    img.src = e.target.result;
-						img.onload = function(){
-					    	var width = img.width;
-					    	var height = img.height;
-					    	var w = width / height * currentOptions.zoom_h;
-					        var pw =(el.clientWidth - w) / 2;					        
-			                    ele.setAttribute('style',
-									'position: absolute; ' +
-									'width: ' + w + 'px; ' +
-									'height: ' +defaultOptions.zoom_h + 'px; ' +
-									'left: ' + pw + 'px; ' +
-									'top: ' + 0 + 'px; '
-								);					    	
-					    $(currentOptions.img_origin_wrap).attr("src", e.target.result);
-					    $(currentOptions.img_preview_wrap).attr("src", e.target.result);
-					   }
-						
-					}
+			var fr = new FileReader();
+			var files = $(currentOptions.input_file_wrap)[0].files;
+			fr.readAsDataURL(files[0]);
+			fr.onload = function(e) {
+				defaultOptions.image.src = e.target.result;
+
+				var img = new Image();
+				img.src = e.target.result;
+				img.onload = function() {
+					var width = img.width;
+					var height = img.height;
+					var w = width / height * currentOptions.zoom_h;
+					var pw = (el.clientWidth - w) / 2;
+					ele.setAttribute('style',
+						'position: absolute; ' +
+						'width: ' + w.toFixed(2) + 'px; ' +
+						'height: ' + defaultOptions.zoom_h.toFixed(2) + 'px; ' +
+						'left: ' + pw.toFixed(4) + 'px; ' +
+						'top: ' + 0 + 'px; '
+					);
+					$(currentOptions.img_origin_wrap).attr("src", e.target.result);
+					$(currentOptions.img_preview_wrap).attr("src", e.target.result);
 				}
-	   
+
+			}
+		}
+
 		function zoomIn() {
-					 var imgWidth = currentOptions.image.width;
-					var imgHeight = currentOptions.image.height;
-					var w = imgWidth / imgHeight * currentOptions.zoom_h;
-					var h = ele.clientHeight;	
-					if(h>currentOptions.maxheight){return;}
-					currentOptions.ratio *= 1.01;
-					setimg();
-				}
+			var zoom = isZoom("in");
+			if(zoom){return;}
+			currentOptions.ratio *= 1.01;
+			setimg();
+		}
+        
 		function zoomOut() {
-			        var imgWidth = currentOptions.image.width;
-					var imgHeight = currentOptions.image.height;
-					var w = imgWidth / imgHeight * currentOptions.zoom_h;
-					var h = ele.clientHeight;
-					if(h<=currentOptions.minheight){return;}
-					currentOptions.ratio *= 0.999;
-					setimg();
-				}
-		function setimg() {
-			//原图宽和高(真实width和heigth)
+			var zoom = isZoom("out");
+			if(zoom){return;}
+			currentOptions.ratio *= 0.99;
+			setimg();
+		}
+        function isZoom(fun){
+          //上传图片的宽和高(图片的实际宽和高)
 			var imgWidth = currentOptions.image.width;
 			var imgHeight = currentOptions.image.height;
-			console.log("imgWidth: "+imgWidth+" imgHeight: "+imgHeight);
-			//缩放比例
-			var ratio = currentOptions.ratio;
-			
-			var width = imgWidth / imgHeight * currentOptions.zoom_h;
-			var height = currentOptions.zoom_h;	
-			//缩放后的高度和宽度				
-			  var w = parseInt(width) * ratio;
-			  var h = parseInt(height) * ratio;
-			   //缩放后图片在容器中的位置
+			//默认缩放后的宽和高(默认缩放指定高度(zoom_h))
+			var w = imgWidth / imgHeight * currentOptions.zoom_h;
+			var h = ele.clientHeight;
+			//如果上传图片的实际尺寸为150*150不缩放
+			var iszoom = (imgWidth == currentOptions.iwidth && imgHeight == currentOptions.iheight);
+			if(iszoom){
+				return true;
+			}
+			if(fun == "out"){//缩小
+			  if(h <= currentOptions.minheight){
+			  	return true;
+			  }
+			}
+			return false;
+        }
+		function setimg() {
+			//缩放后的高度和宽度
+			var tmp = currentOptions.image.width / currentOptions.image.height * currentOptions.zoom_h,
+			    w = tmp * currentOptions.ratio,
+				h = currentOptions.zoom_h * currentOptions.ratio;
+				
+			//缩放后图片在容器中的位置
 			var pw = (el.clientWidth - w) / 2;
 			var ph = (el.clientHeight - h) / 2;
 			//设置缩放后的图片的位置
-				ele.setAttribute('style',
-					'position: absolute; ' +
-					'width: ' + w + 'px; ' +
-					'height: ' + h + 'px; ' +
-					'left: ' + pw + 'px; ' +
-					'top: ' + 0 + 'px; '
-				);
-			console.log("w: " + w + " h: " + h + " pw: " + pw + " ph： " + ph);
-			
+			ele.setAttribute('style',
+				'position: absolute; ' +
+				'width: ' + w.toFixed(2) + 'px; ' +
+				'height: ' + h.toFixed(2) + 'px; ' +
+				'left: ' + pw.toFixed(4) + 'px; ' +
+				'top: ' + 0 + 'px; ');
 		}
-		function getDataURL(){
+
+		function getDataURL() {
 			var width = el.clientWidth,
-			    height = el.clientHeight,
-			    canvas = document.createElement("canvas"),
-			    dim = el.style.top,
-			    sx = 0,
-			    sy = 0,
-			    sw = parseInt(currentOptions.image.width),
-			    sh = parseInt(currentOptions.image.height),
-			    dx = 0,
-			    dy = 0,
-			    dw = 0,
-			    dh = 0;			    
+				height = el.clientHeight,
+				canvas = document.createElement("canvas"),
+				dim = el.style.top,
+				sx = 0,
+				sy = 0,
+				sw = parseInt(currentOptions.image.width),
+				sh = parseInt(currentOptions.image.height),
+				dx = 0,
+				dy = 0,
+				dw = 0,
+				dh = 0;
 			canvas.width = width;
-            canvas.height = height;
-            var context = canvas.getContext("2d");
-			context.drawImage(currentOptions.image,sx,sy,sw,sh,dx,dy,dw,dh);
+			canvas.height = height;
+			var context = canvas.getContext("2d");
+			context.drawImage(currentOptions.image, sx, sy, sw, sh, dx, dy, dw, dh);
 			var imageData = canvas.toDataURL('image/png');
-			console.log(imageData);
-            return imageData;
+			return imageData;
 		}
-		
+		//onmousedown 事件会在鼠标按键被按下时发生
+		function mousedown(e) {
+			stopEvent(e);
+			pauseEvent(e);
+			var event = e || window.event;
+			currentOptions.state.dragable = true;
+			currentOptions.state.mouseX = event.clientX;
+			currentOptions.state.mouseY = event.clientY;
+		} //当鼠标指针在指定的元素中移动时，就会发生 mousemove 事件。
+		function mousemove(e) {
+			stopEvent(e);
+			pauseEvent(e);
+			var event = e || event;
+			//已偏移量
+			var left = ele.style.left;
+			var top = ele.style.top;
+			if(currentOptions.state.dragable) {
+				//拖动的位移
+				var x = event.clientX - currentOptions.state.mouseX;
+				var y = event.clientY - currentOptions.state.mouseY;
+				//新的偏移量
+				var offset_x = (parseInt(left) + x).toFixed(4),
+				    offset_y = (parseInt(top) + y).toFixed(4);
+				var zoom = isZoom("move");
+				if(zoom){return;}
+				ele.style.left = offset_x + "px";
+				ele.style.top = offset_y + "px";
+				currentOptions.state.mouseX = event.clientX;
+				currentOptions.state.mouseY = event.clientY;
+			}
+		}
+
+		function mouseup(e) {
+			stopEvent(e);
+			pauseEvent(e);
+			var event = e || event;
+			currentOptions.state.dragable = false;
+		}
+
+		function zoomImage() {
+			var evt = window.event || e;
+			var delta = evt.detail ? evt.detail * (-120) : evt.wheelDelta;
+			delta > -120 ? currentOptions.ratio *= 1.01 : currentOptions.ratio *= 0.999;
+		}
+
+		function stopEvent(e) {
+			if(window.event) e.cancelBubble = true;
+			else e.stopImmediatePropagation();
+		}
+
+		function attachEvent(node, event, cb) {
+			if(node.attachEvent)
+				node.attachEvent('on' + event, cb);
+			else if(node.addEventListener)
+				node.addEventListener(event, cb);
+		}
+
+		function detachEvent(node, event, cb) {
+			if(node.detachEvent) {
+				node.detachEvent('on' + event, cb);
+			} else if(node.removeEventListener) {
+				node.removeEventListener(event, render);
+			}
+		}
+
+		function pauseEvent(e) {
+			if(e.stopPropagation) e.stopPropagation();
+			if(e.preventDefault) e.preventDefault();
+			e.cancelBubble = true;
+			e.returnValue = false;
+			return false;
+		}
+
 	}
 })(jQuery, window, document);
-
 /*var myPlugin = function(options) {
 		var obj = {
 				show: function() {
@@ -392,7 +514,7 @@
 			*/
 		</script>
 	</head>
-	<body>
+	<body onselectstart="return false">
 		<div class="wrapper-upload">
 			<div class="input-file-wrap">
 			   <input type="file" name="file" class="input-file" id="uploadFile">
