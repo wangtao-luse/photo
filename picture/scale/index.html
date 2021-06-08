@@ -446,8 +446,14 @@
 				    offset_y = (parseInt(top) + y).toFixed(4);
 				var zoom = isZoom("move");
 				if(zoom){return;}
+				var h = ele.clientHeight;
 				ele.style.left = offset_x + "px";
-				ele.style.top = offset_y + "px";
+				if(h>currentOptions.minheight){
+					ele.style.top = offset_y + "px";
+				}
+				
+				
+				
 				currentOptions.state.mouseX = event.clientX;
 				currentOptions.state.mouseY = event.clientY;
 			}
