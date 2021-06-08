@@ -92,12 +92,8 @@
 		</script>
 		<script>
 			/**
-			 * w=268,h=151;
-			 *  w/184=268/151
-			 * 326.56
-			 
-			 * 
-			 * 
+			 * img_width = 294.4px
+			 * left = 33px;
 			 * 
 			 * 
 			 *图片的常见比例
@@ -446,8 +442,19 @@
 				    offset_y = (parseInt(top) + y).toFixed(4);
 				var zoom = isZoom("move");
 				if(zoom){return;}
+				
 				var h = ele.clientHeight;
-				ele.style.left = offset_x + "px";
+				var o_x = (el.clientWidth- currentOptions.zoom_h) / 2;
+				
+				//图片的宽度-(容器的宽度-偏移的宽度)=偏移量
+				var img_w = parseFloat(ele.style.width);
+				var wrap_w = parseFloat(el.clientWidth);
+				var x_o = img_w - (wrap_w - o_x);
+				
+				if((offset_x <= o_x && x>0)||(offset_x>= -x_o && x<0)){
+					ele.style.left = offset_x + "px";
+				}
+				
 				if(h>currentOptions.minheight){
 					ele.style.top = offset_y + "px";
 				}
