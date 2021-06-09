@@ -444,24 +444,20 @@
 				'top: ' + ph.toFixed(4) + 'px; ');
 		}
 
-		function getDataURL() {
-			var width = el.clientWidth,
-				height = el.clientHeight,
-				canvas = document.createElement("canvas"),
-				sx = Math.abs(el.style.left),
-				sy = 0,
-				sw = parseInt(currentOptions.image.width),
-				sh = parseInt(currentOptions.image.height),
-				dimy = el.style.top,
-                dimx = el.style.left,
-				dx = dimx - ele.clientWidth / 2 + width / 2,
-				dy = dimy - ele.clientHeight /2 + height / 2,
-				dw = parseInt(ele.style.width),
-				dh = parseInt(ele.style.height);
-			canvas.width = width;
-			canvas.height = height;
+		function getDataURL() {			
+			var canvas = document.createElement("canvas");			      
+			canvas.width = ele.clientWidth;
+			canvas.height = ele.clientHeight;
 			var context = canvas.getContext("2d");
-			context.drawImage(currentOptions.image, sx, sy, sw, sh, dx, dy, dw, dh);
+			var img = currentOptions.image,
+			    sx = 0,
+			    sy = 0,
+			    swidth = ele.clientWidth;
+			    sheight = ele.clientHeight;
+			context.drawImage(img,sx,sy,swidth,sheight);
+			
+
+			
 			var imageData = canvas.toDataURL('image/png');
 			return imageData;
 		}
@@ -510,7 +506,7 @@
 				if(mh && ((offset_y >= -top_y && y < 0))||(offset_y <= -bottom_y  && y > 0)){
 					ele.style.top = offset_y + "px";
 					var img = getDataURL();
-					$(currentOptions.img_origin_wrap).attr("src", img);
+					$(currentOptions.img_preview_wrap).attr("src", img);
 				}
 				
 				
@@ -526,7 +522,7 @@
 			var event = e || event;
 			currentOptions.state.dragable = false;
 			var img = getDataURL();
-			$(currentOptions.img_origin_wrap).attr("src", img);
+			$(currentOptions.img_preview_wrap).attr("src", img);
 		}
 
 		function zoomImage() {

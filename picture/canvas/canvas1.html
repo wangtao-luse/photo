@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>在画布上定位图像</title>
+		
+	</head>
+	<body>
+		<img src="../../img/avatar-1.jpg"  id="scream" />
+		<canvas id="myCanvas" style="border:1px solid #d3d3d3;" width="150" height="150">
+	</body>
+	<script>
+		
+		    /**
+		     * 在画布上定位图像：
+		     *     context.drawImage(img,x,y);
+		     * 在画布上定位图像，并规定图像的宽度和高度：
+		     *     context.drawImage(img,x,y,width,height);
+		     * 剪切图像，并在画布上定位被剪切的部分：
+				context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+		     */
+			var c=document.getElementById("myCanvas");
+			var ctx=c.getContext("2d");
+			var img=document.getElementById("scream");
+			img.onload = function()
+			{
+			    ctx.drawImage(img,0,0,150,150,0,0,100,100);
+			}
+		</script>
+</html>
