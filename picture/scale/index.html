@@ -89,13 +89,35 @@
 				//console.log("pageX: "+e.pageX+" pageY: "+e.pageY);
 				//console.log("clientX: "+e.clientX+" clientY: "+e.clientY)
 			})
+			
+			
+			
 		</script>
 		<script>
-			/**
-			 * img_width = 294.4px
-			 * left = 33px;
+			/**		 
+			 *
+			 * 151 * x = 185.227  x=1.226
+			 * 200 * x = 245.333  x=1.226
+			 * 334 * x = 409.707  x=1.226667
 			 * 
-			 * 
+			 * js中浮点数计算不精确问题解决方案：
+			 * https://blog.csdn.net/qq_29393273/article/details/100154990
+			 * Math.max(value1[,value2, ...])
+			 *  返回给定的一组数字中的最大值;
+			       如果给定的参数中至少有一个参数无法被转换成数字，则会返回 NaN。
+			      如果没有参数，则结果为 - Infinity
+
+			 * Math.pow(base, exponent)
+			 *   返回基数（base）的指数（exponent）次幂;
+			 *   表示base的exponent次方;
+			 * Math.round(x);四舍五入取整
+			 *    返回与 x 最接近的整数;
+			 *    对于 0.5，该方法将进行上舍入;
+			 *    3.5将舍入4,-3.5将舍入-3;
+			 * Math.floor(x);向下取整计算
+			 *  返回小于等于 x，且与 x 最接近的整数
+			 * Math.ceil(x)向上取整计算
+			 *  返回大于或等于 x ，并且与之最接近的整数;
 			 *图片的常见比例
 			 * 3:2  =1.5
 			 * 4:3  ≈1.333
@@ -108,8 +130,7 @@
 			 * 18:9  =2 
 			 * 2.39:1 =2.39
 			 * 
-			 * 150*150  1.226666666666667  top:0 left:28;    
-			 * 200*200  0.92			   top:0 left:28;
+			
 			 * 作用域:一条数据可以在哪个范围中使用;
 			 * 相关文档：https://www.cnblogs.com/jianghao233/p/8989769.html
 			 * 150*x=184
@@ -300,12 +321,18 @@
 			image: new Image(), //图片必须给一个图片路径
 			state: {},
 		}
+		
 		var currentOptions = $.extend(defaultOptions, options);
 		var ele = document.querySelector(currentOptions.img_origin_wrap);
 		var el = document.querySelector(currentOptions.img_origin_wrapper);
+		var timer;
 		$(currentOptions.input_file_wrap).on("change", previewFile);
 		$(currentOptions.zoomInButton).on("click", zoomIn);
 		$(currentOptions.zoomOutButton).on("click", zoomOut);
+		$(currentOptions.zoomInButton).on("mousedown", zoomIndown);
+		$(currentOptions.zoomOutButton).on("mousedown", zoomOutdown);
+		$(currentOptions.zoomInButton).on("mouseup", zoomInleave);
+		$(currentOptions.zoomOutButton).on("mouseup", zoomOutleave);
 		attachEvent(ele, "mousedown", mousedown);
 		attachEvent(ele, "mousemove", mousemove);
 		attachEvent(ele, "mouseup", mouseup);
@@ -325,7 +352,6 @@
 			fr.readAsDataURL(files[0]);
 			fr.onload = function(e) {
 				defaultOptions.image.src = e.target.result;
-
 				var img = new Image();
 				img.src = e.target.result;
 				img.onload = function() {
@@ -336,7 +362,7 @@
 					ele.setAttribute('style',
 						'position: absolute; ' +
 						'width: ' + w.toFixed(2) + 'px; ' +
-						'height: ' + defaultOptions.zoom_h.toFixed(2) + 'px; ' +
+						'height: ' + defaultOptions.zoom_h+ 'px; ' +
 						'left: ' + pw.toFixed(4) + 'px; ' +
 						'top: ' + 0 + 'px; '
 					);
@@ -346,12 +372,29 @@
 
 			}
 		}
-
+        function zoomIndown(){
+        	timer = setInterval(function(){
+        		zoomIn();
+        	},100)
+        }
+        function zoomInleave(){
+        	clearInterval(timer);
+        }
+        function zoomOutdown(){
+        	timer = setInterval(function(){
+        		zoomOut();
+        	},100)
+        }
+        function zoomOutleave(){
+        	clearInterval(timer);
+        }
 		function zoomIn() {
 			var zoom = isZoom("in");
 			if(zoom){return;}
 			currentOptions.ratio *= 1.01;
 			setimg();
+			var img = getDataURL();
+			$(currentOptions.img_preview_wrap).attr("src", img);
 		}
         
 		function zoomOut() {
@@ -359,6 +402,8 @@
 			if(zoom){return;}
 			currentOptions.ratio *= 0.99;
 			setimg();
+			var img = getDataURL();
+			$(currentOptions.img_preview_wrap).attr("src", img);
 		}
         function isZoom(fun){
           //上传图片的宽和高(图片的实际宽和高)
@@ -367,13 +412,13 @@
 			//默认缩放后的宽和高(默认缩放指定高度(zoom_h))
 			var w = imgWidth / imgHeight * currentOptions.zoom_h;
 			var h = ele.clientHeight;
-			//如果上传图片的实际尺寸为150*150不缩放
+			//1.如果上传图片的实际尺寸为150*150不缩放
 			var iszoom = (imgWidth == currentOptions.iwidth && imgHeight == currentOptions.iheight);
 			if(iszoom){
 				return true;
 			}
 			if(fun == "out"){//缩小
-			  if(h <= currentOptions.minheight){
+			  if(h < currentOptions.minheight){
 			  	return true;
 			  }
 			}
@@ -384,32 +429,35 @@
 			var tmp = currentOptions.image.width / currentOptions.image.height * currentOptions.zoom_h,
 			    w = tmp * currentOptions.ratio,
 				h = currentOptions.zoom_h * currentOptions.ratio;
-				
+				    
 			//缩放后图片在容器中的位置
 			var pw = (el.clientWidth - w) / 2;
-			var ph = (el.clientHeight - h) / 2;
+			//var ph = (el.clientHeight - h) / 2;
+			var ph = (parseInt(ele.style.height) - h) / 2;
 			//设置缩放后的图片的位置
+		//	var top = parseFloat(ele.style.top?ele.style.top:0).toFixed(4);
 			ele.setAttribute('style',
 				'position: absolute; ' +
-				'width: ' + w.toFixed(2) + 'px; ' +
-				'height: ' + h.toFixed(2) + 'px; ' +
+				'width: ' + w.toFixed(3) + 'px; ' +
+				'height: ' + h.toFixed(3) + 'px; ' +
 				'left: ' + pw.toFixed(4) + 'px; ' +
-				'top: ' + 0 + 'px; ');
+				'top: ' + ph.toFixed(4) + 'px; ');
 		}
 
 		function getDataURL() {
 			var width = el.clientWidth,
 				height = el.clientHeight,
 				canvas = document.createElement("canvas"),
-				dim = el.style.top,
-				sx = 0,
+				sx = Math.abs(el.style.left),
 				sy = 0,
 				sw = parseInt(currentOptions.image.width),
 				sh = parseInt(currentOptions.image.height),
-				dx = 0,
-				dy = 0,
-				dw = 0,
-				dh = 0;
+				dimy = el.style.top,
+                dimx = el.style.left,
+				dx = dimx - ele.clientWidth / 2 + width / 2,
+				dy = dimy - ele.clientHeight /2 + height / 2,
+				dw = parseInt(ele.style.width),
+				dh = parseInt(ele.style.height);
 			canvas.width = width;
 			canvas.height = height;
 			var context = canvas.getContext("2d");
@@ -438,8 +486,8 @@
 				var x = event.clientX - currentOptions.state.mouseX;
 				var y = event.clientY - currentOptions.state.mouseY;
 				//新的偏移量
-				var offset_x = (parseInt(left) + x).toFixed(4),
-				    offset_y = (parseInt(top) + y).toFixed(4);
+				var offset_x = (parseInt(left) + x).toFixed(2),
+				    offset_y = (parseInt(top) + y).toFixed(2);
 				var zoom = isZoom("move");
 				if(zoom){return;}
 				
@@ -450,13 +498,19 @@
 				var img_w = parseFloat(ele.style.width);
 				var wrap_w = parseFloat(el.clientWidth);
 				var x_o = img_w - (wrap_w - o_x);
-				
 				if((offset_x <= o_x && x>0)||(offset_x>= -x_o && x<0)){
 					ele.style.left = offset_x + "px";
+					var img = getDataURL();
+					$(currentOptions.img_preview_wrap).attr("src", img);
 				}
-				
-				if(h>currentOptions.minheight){
+				var mh = (h > currentOptions.minheight);
+				var img_h = parseFloat(ele.style.height);
+				var top_y = img_h - currentOptions.zoom_h;
+				var bottom_y = parseInt(top);
+				if(mh && ((offset_y >= -top_y && y < 0))||(offset_y <= -bottom_y  && y > 0)){
 					ele.style.top = offset_y + "px";
+					var img = getDataURL();
+					$(currentOptions.img_origin_wrap).attr("src", img);
 				}
 				
 				
@@ -471,6 +525,8 @@
 			pauseEvent(e);
 			var event = e || event;
 			currentOptions.state.dragable = false;
+			var img = getDataURL();
+			$(currentOptions.img_origin_wrap).attr("src", img);
 		}
 
 		function zoomImage() {
@@ -506,7 +562,60 @@
 			e.returnValue = false;
 			return false;
 		}
-
+		 
+		function accAdd(arg1,arg2){ 
+			var r1,r2,m;
+			try{
+				r1 = arg1.toString().split(".")[1].length;
+			}catch(e){
+				r1 = 0;
+			}
+			try{
+				r2 = arg2.toString().split(".")[1].length;
+			}catch(e){
+				
+				r2 = 0;
+			}
+			m = Math.pow(10,Math.max(r1,r2));
+			return (arg1 * m + arg2 * m) / m;
+		}
+        function accsub(arg1,arg2){
+        	return accAdd(arg1,-arg2);
+        }
+        
+        function accMul(arg1,arg2){
+        	var m = 0,
+        	    s1 = arg1.toString(),
+        	    s2 = arg2.toString();
+        	try{
+        		m += s1.split(".")[1].length;
+        	}catch(e){}
+        	try{
+        		m += s2.split(".")[1].length;
+        	}catch(e){}
+        	return Number(s1.replace(".","")) * Number(s1.replace(".","")) / Math.pow(10,m);
+        }
+        
+        function accDiv(arg1,arg2){ 
+        	var t1 = 0,t2 = 0,
+        	    r1,r2;
+        	try{
+        		t1 = arg1.toString().split(".")[1].length;
+        	}catch(e){}
+        	try{
+        		t2 = arg2.toString().split(".")[1].length;
+        	}catch(e){}
+        		r1 = Number(arg1.toString().replace(".",""));
+        		r2 = Number(arg2.toString().replace(".",""));
+        		return r1 / r2 * Math.pow(10,t2 - t1);
+        }
+        function toFixed(arg1,len) {
+			var s;
+			var temp = Math.pow(10, len);
+			s = Math.round(arg1 * temp);
+			return s / temp
+		};
+        
 	}
 })(jQuery, window, document);
 /*var myPlugin = function(options) {
@@ -525,7 +634,11 @@
 			var c = new myPlugin();
 			   c.show();
 			*/
-		</script>
+
+
+
+
+</script>
 	</head>
 	<body onselectstart="return false">
 		<div class="wrapper-upload">
