@@ -96,9 +96,7 @@
 		<script>
 			/**		 
 			 *
-			 * 151 * x = 185.227  x=1.226
-			 * 200 * x = 245.333  x=1.226
-			 * 334 * x = 409.707  x=1.226667
+			 * 1 =cw/184
 			 * 
 			 * js中浮点数计算不精确问题解决方案：
 			 * https://blog.csdn.net/qq_29393273/article/details/100154990
@@ -445,19 +443,48 @@
 		}
 
 		function getDataURL() {			
-			var canvas = document.createElement("canvas");			      
-			canvas.width = ele.clientWidth;
-			canvas.height = ele.clientHeight;
+			var canvas = document.createElement("canvas");
 			var context = canvas.getContext("2d");
-			var img = currentOptions.image,
-			    sx = 0,
-			    sy = 0,
-			    swidth = ele.clientWidth;
-			    sheight = ele.clientHeight;
-			context.drawImage(img,sx,sy,swidth,sheight);
-			
-
-			
+			var img = currentOptions.image;			    
+			var swidth = currentOptions.image.width,
+			    sheight = currentOptions.image.height,
+			    container_w = el.clientWidth,
+			    container_h = el.clientHeight,
+			    zoom_w = ele.clientWidth,
+			    zoom_h = ele.clientHeight,
+			    left = parseInt(ele.style.left),
+			    top = parseInt(ele.style.top),
+			    w = swidth / sheight * currentOptions.zoom_h,
+			    pw = (el.clientWidth - w) / 2,
+			    sx = left,
+			    sy = top;
+			var width,height;//268*151 
+			if(swidth==currentOptions.iwidth&&sheight == currentOptions.iheight){
+				width = swidth;
+				height = sheight;
+				sx=0;
+				sy=0;
+			}else{
+				if(zoom_w<=container_w){
+					var d = pw - left;
+					width = swidth -(4*d);
+					height =sheight -d;
+					if(d<= 0){
+					  sx= 0;
+					  sy= 0;
+					}
+					
+				}else{
+					width = el.clientWidth;
+					height=el.clientHeight;
+					sx = left;
+					sy = top;
+				}
+			}   
+			canvas.width = width;
+			canvas.height = height;  
+			console.log("sx： "+sx+" sy："+sy+"swidth："+swidth+"sheight："+sheight+"width："+width+"height:"+height);
+			context.drawImage(img,sx,sy,swidth,sheight,0,0,width,height);
 			var imageData = canvas.toDataURL('image/png');
 			return imageData;
 		}
@@ -508,9 +535,6 @@
 					var img = getDataURL();
 					$(currentOptions.img_preview_wrap).attr("src", img);
 				}
-				
-				
-				
 				currentOptions.state.mouseX = event.clientX;
 				currentOptions.state.mouseY = event.clientY;
 			}
