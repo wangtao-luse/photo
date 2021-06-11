@@ -57,11 +57,11 @@
 			.orgin-photo{
 				cursor: move;
 			}
-			.pre-photo{
+			/*.pre-photo{
 				width: 150px;
 				height: 150px;
 				border-radius: 50%;
-			}
+			}*/
 			
 		</style>
 		<script type="text/javascript" src="../../js/common/jquery-3.4.1.js.js" ></script>
@@ -96,7 +96,10 @@
 		<script>
 			/**		 
 			 *
-			 * 1 =cw/184
+			 * c = 187.698 /500  c=0.375396
+			 * 1.8492/w= 0.375396  w =45;
+			 * 
+			 *
 			 * 
 			 * js中浮点数计算不精确问题解决方案：
 			 * https://blog.csdn.net/qq_29393273/article/details/100154990
@@ -312,8 +315,8 @@
 			zoomOutButton: "#zoomOutButton", //缩小 必须
 			minheight: 184, //缩放时图片的最小高度
 			maxheight: 2000, //缩放图片的最大高度 
-			iwidth:150,//图片最小宽度
-			iheight:150,//图片最小高度
+			iwidth:150,//原图片最小宽度
+			iheight:150,//原图片最小高度
 			ratio: 1, //图片缩放比例
 			zoom_h: 184, //图片默认缩放高度
 			image: new Image(), //图片必须给一个图片路径
@@ -332,7 +335,6 @@
 		$(currentOptions.zoomInButton).on("mouseup", zoomInleave);
 		$(currentOptions.zoomOutButton).on("mouseup", zoomOutleave);
 		attachEvent(ele, "mousedown", mousedown);
-		attachEvent(ele, "mousemove", mousemove);
 		attachEvent(ele, "mouseup", mouseup);
 		attachEvent(ele, "mouseleave", mouseup);
 		/*	$(currentOptions.img_origin_wrap).on("mousedown",mousedown);
@@ -356,11 +358,12 @@
 					var width = img.width;
 					var height = img.height;
 					var w = width / height * currentOptions.zoom_h;
+					var h = currentOptions.zoom_h;
 					var pw = (el.clientWidth - w) / 2;
 					ele.setAttribute('style',
 						'position: absolute; ' +
 						'width: ' + w.toFixed(2) + 'px; ' +
-						'height: ' + defaultOptions.zoom_h+ 'px; ' +
+						'height: ' +h.toFixed(2)+ 'px; ' +
 						'left: ' + pw.toFixed(4) + 'px; ' +
 						'top: ' + 0 + 'px; '
 					);
@@ -392,7 +395,7 @@
 			currentOptions.ratio *= 1.01;
 			setimg();
 			var img = getDataURL();
-			$(currentOptions.img_preview_wrap).attr("src", img);
+			$(currentOptions.img_preview_wrap).attr("src", img);			
 		}
         
 		function zoomOut() {
@@ -424,16 +427,14 @@
         }
 		function setimg() {
 			//缩放后的高度和宽度
-			var tmp = currentOptions.image.width / currentOptions.image.height * currentOptions.zoom_h,
+			var tmp = currentOptions.image.width / currentOptions.image.height * parseFloat(ele.style.height),
 			    w = tmp * currentOptions.ratio,
 				h = currentOptions.zoom_h * currentOptions.ratio;
-				    
 			//缩放后图片在容器中的位置
 			var pw = (el.clientWidth - w) / 2;
-			//var ph = (el.clientHeight - h) / 2;
-			var ph = (parseInt(ele.style.height) - h) / 2;
+			//var ph = (el.clientHeight - h) / 2;			   
+			var ph = (currentOptions.zoom_h - h)/2;
 			//设置缩放后的图片的位置
-		//	var top = parseFloat(ele.style.top?ele.style.top:0).toFixed(4);
 			ele.setAttribute('style',
 				'position: absolute; ' +
 				'width: ' + w.toFixed(3) + 'px; ' +
@@ -446,43 +447,38 @@
 			var canvas = document.createElement("canvas");
 			var context = canvas.getContext("2d");
 			var img = currentOptions.image;			    
-			var swidth = currentOptions.image.width,
-			    sheight = currentOptions.image.height,
-			    container_w = el.clientWidth,
-			    container_h = el.clientHeight,
-			    zoom_w = ele.clientWidth,
-			    zoom_h = ele.clientHeight,
-			    left = parseInt(ele.style.left),
-			    top = parseInt(ele.style.top),
-			    w = swidth / sheight * currentOptions.zoom_h,
-			    pw = (el.clientWidth - w) / 2,
-			    sx = left,
-			    sy = top;
-			var width,height;//268*151 
-			if(swidth==currentOptions.iwidth&&sheight == currentOptions.iheight){
+			var swidth = currentOptions.image.width,//原图w
+			    sheight = currentOptions.image.height,//原图h
+			    container_w = el.clientWidth,//容器的w
+			    container_h = el.clientHeight,//容器的h
+			    zoom_w = ele.clientWidth,//缩放后的图片的w
+			    zoom_h = ele.clientHeight,//缩放后的图片的h
+			    //默认缩放的宽
+			    sw =swidth / sheight * currentOptions.zoom_h,
+			    //默认偏移位置
+			    sleft = (el.clientWidth - sw)/2,
+			    left = parseInt(ele.style.left),//缩放后图片的向左的偏移量
+			    top = parseInt(ele.style.top),//缩放后图片的向右的偏移量
+			    sx =0,//开始剪切的 x 坐标位置
+			    sy =0,//开始剪切的 y 坐标位置			    
+			    width = currentOptions.iwidth,//缩放后图片的w
+			    height = currentOptions.iheight,//缩放后图片的h	
+			    //图片比例尺
+			    scale = zoom_w / swidth;
+			//原图中的剪切的坐标
+			if(left<0){
+				width = swidth - Math.abs(left)/scale;
+				height = sheight;
+				sx = Math.abs(left)/scale;
+			}else if(left<=sleft){
 				width = swidth;
 				height = sheight;
-				sx=0;
-				sy=0;
-			}else{
-				if(zoom_w<=container_w){
-					var d = pw - left;
-					width = swidth -(4*d);
-					height =sheight -d;
-					if(d<= 0){
-					  sx= 0;
-					  sy= 0;
-					}
-					
-				}else{
-					width = el.clientWidth;
-					height=el.clientHeight;
-					sx = left;
-					sy = top;
-				}
-			}   
+			}
+			   
+			//设置画布的宽度
 			canvas.width = width;
 			canvas.height = height;  
+			
 			console.log("sx： "+sx+" sy："+sy+"swidth："+swidth+"sheight："+sheight+"width："+width+"height:"+height);
 			context.drawImage(img,sx,sy,swidth,sheight,0,0,width,height);
 			var imageData = canvas.toDataURL('image/png');
@@ -496,6 +492,7 @@
 			currentOptions.state.dragable = true;
 			currentOptions.state.mouseX = event.clientX;
 			currentOptions.state.mouseY = event.clientY;
+			attachEvent(ele, "mousemove", mousemove);
 		} //当鼠标指针在指定的元素中移动时，就会发生 mousemove 事件。
 		function mousemove(e) {
 			stopEvent(e);

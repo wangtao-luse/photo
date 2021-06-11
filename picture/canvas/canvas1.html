@@ -7,9 +7,9 @@
 	</head>
 	<body>
 		
-		<canvas id="myCanvas" style="border:1px solid red;"></canvas>
-		<img src="../../img/avatar-3.jpg" id="scream"   />
-			
+
+		<img src="../../img/avatar-3.jpg" id="scream"   style="border:1px solid red;"/>
+		<canvas id="myCanvas" style="border:1px solid red;"></canvas>	
 	</body>
 	<script>
 		
@@ -37,9 +37,46 @@
 			var img=document.getElementById("scream");
 			img.onload = function()
 			{
-				c.width = 458;
-				c.height = 498;
-				ctx.drawImage(img,32,0,500,500,0,0,498,498);
+				/**
+				 *  画布的宽(canvasw) = 伸展或缩小后的图像的宽(width)
+				 *  画布的高(canvash) = 伸展或缩小后的图像的高(height)
+				 *  裁剪的横坐标(sx) + 伸展或缩小后的图像的宽(width) <= (原图宽)ow
+				 *  裁剪的纵坐标(sy) + 伸展或缩小后的图像的高(height) <= (原图高)oh
+				 */
+				var ow = 500,//原图宽
+				    oh = 500,//原图高
+				    width = 498,//伸展或缩小后的图像的宽
+				    height = 498,//伸展或缩小后的图像的高
+				    sx = 300,//开始剪切的 x 坐标位置
+				    sy = 0,//开始剪切的 y 坐标位置
+				    canvasw = width,//画布的宽
+				    canvash = height;//画布的高
+				c.width = canvasw;//画布的宽
+				c.height = canvasw;//画布的高	
+				if(sx > ow - width){
+		   	  	 console.log("sx坐标过大");
+		   	  	   sx = ow -width;
+		   	    }
+				if(sy > oh - height){
+					console.log("sy坐标过大");
+					sy = oh - height;
+				}
+				ctx.drawImage(img,sx,sy,ow,oh,0,0,width,height);
+				
+				
 			}
+		   function isCheck(sx,sy,width,height,ow,oh){
+		   	//裁剪的横坐标(sx) + 伸展或缩小后的图像的宽(width) <= (原图宽)ow
+		   	  if(sx > ow - width){
+		   	  	console.log("sx坐标过大");
+		   	  	return false;
+		   	  }
+		   // 裁剪的纵坐标(sy) + 伸展或缩小后的图像的高(height) <= (原图高)oh
+		   if(sy> oh - height){
+		   	  console.log("sy坐标过大");
+		   	  return false;
+		   }
+		   return true;
+		   }
 		</script>
 </html>
