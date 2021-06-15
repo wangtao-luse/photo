@@ -57,12 +57,11 @@
 			.orgin-photo{
 				cursor: move;
 			}
-			/*.pre-photo{
+			.pre-photo{
 				width: 150px;
 				height: 150px;
 				border-radius: 50%;
-			}*/
-			
+			}	
 		</style>
 		<script type="text/javascript" src="../../js/common/jquery-3.4.1.js.js" ></script>
 		<script>
@@ -313,6 +312,7 @@
 			img_preview_wrap: ".pre-photo", //图片预览的标识 必须
 			zoomInButton: "#zoomInButton", //放大 必须
 			zoomOutButton: "#zoomOutButton", //缩小 必须
+			upload_btn:".upload-btn",
 			minheight: 184, //缩放时图片的最小高度
 			maxheight: 2000, //缩放图片的最大高度 
 			iwidth:150,//原图片最小宽度
@@ -334,6 +334,7 @@
 		$(currentOptions.zoomOutButton).on("mousedown", zoomOutdown);
 		$(currentOptions.zoomInButton).on("mouseup", zoomInleave);
 		$(currentOptions.zoomOutButton).on("mouseup", zoomOutleave);
+		$(currentOptions.upload_btn).on("click", upload);
 		attachEvent(ele, "mousedown", mousedown);
 		attachEvent(ele, "mouseup", mouseup);
 		attachEvent(ele, "mouseleave", mouseup);
@@ -419,11 +420,45 @@
 				return true;
 			}
 			if(fun == "out"){//缩小
-			  if(h < currentOptions.minheight){
+			  if(h <= currentOptions.minheight){
 			  	return true;
 			  }
 			}
 			return false;
+        }
+        function dataURLtoFile (dataurl, filename) { 
+	    var arr = dataurl.split(','),
+	        mime = arr[0].match(/:(.*?);/)[1],
+	        bstr = atob(arr[1]),
+	        n = bstr.length,
+	        u8arr = new Uint8Array(n);
+	    while (n--) {
+	        u8arr[n] = bstr.charCodeAt(n);
+	    }
+	    return new File([u8arr], filename, { type: mime });
+	}
+        function upload(){
+        	var dataurl,filename;
+        	dataurl = $(currentOptions.img_preview_wrap).attr("src");
+        	filename ="itour.png"
+        	var file = dataURLtoFile (dataurl, filename);
+        	console.log(file);
+        	var form = new FormData();
+        	form.append("file",file);
+        	var url = "";
+        	$.ajax({
+        		type:"post",
+        		url:url,
+        		data:form,
+        		dataType: "json",
+        		cache:false,
+        		processData:false,
+        		contentType:false,
+        		success:function(result){
+        			console.log("上传完成！")
+        		}
+        	});
+        
         }
 		function setimg() {
 			//缩放后的高度和宽度
@@ -456,29 +491,44 @@
 			    //默认缩放的宽
 			    sw =swidth / sheight * currentOptions.zoom_h,
 			    //默认偏移位置
-			    sleft = (el.clientWidth - sw)/2,
+			    sleft = (el.clientWidth - sw) / 2,	
+			    stop  = 0,
 			    left = parseInt(ele.style.left),//缩放后图片的向左的偏移量
 			    top = parseInt(ele.style.top),//缩放后图片的向右的偏移量
 			    sx =0,//开始剪切的 x 坐标位置
 			    sy =0,//开始剪切的 y 坐标位置			    
-			    width = currentOptions.iwidth,//缩放后图片的w
-			    height = currentOptions.iheight,//缩放后图片的h	
+			    width = currentOptions.iwidth,//缩放后图片的最小w
+			    height = currentOptions.iheight,//缩放后图片的最新h	
 			    //图片比例尺
-			    scale = zoom_w / swidth;
+			    scaleW = zoom_w / swidth,
+			    scaleH = zoom_h / sheight;
 			//原图中的剪切的坐标
-			if(left<0){
-				width = swidth - Math.abs(left)/scale;
-				height = sheight;
-				sx = Math.abs(left)/scale;
-			}else if(left<=sleft){
-				width = swidth;
-				height = sheight;
-			}
-			   
-			//设置画布的宽度
+		     if(zoom_w <= container_w){
+		     	//图片相对容器向上偏移量
+		     	var top = Math.abs(top);
+		     	//缩放的宽度 / 实际的宽度 = scaleW
+		     	//实际的宽度 = 实际缩放的宽度 / scaleW;
+		     	//实际缩放的宽度 = 默认的偏移量 - 偏移量
+		     	var tw = (Math.abs(sleft)-Math.abs(left))/ scaleW;
+		     	var th = Math.abs(top)/scaleH;
+		     	    sy = top;
+		     	width = swidth + tw;
+		     	height = sheight+ th;
+		     }else{
+		     	//缩放的宽度 / 实际的宽度 = scaleW
+		     	//实际宽度 = 缩放的宽度 / scaleW;
+		     	 // 缩放的宽度 = 偏移量-默认的偏移
+		     	 var t_w = Math.abs(left - sleft) /scaleW;
+		     	 var t_h = Math.abs(top) / scaleH;
+		     	 width = swidth + t_w;
+		     	 height = sheight + t_h;
+		     	
+		     	sx = Math.abs(left - sleft);
+		     	sy = top;
+		     }
+			//设置画布的宽度(默认为缩放图片的最小w和h)
 			canvas.width = width;
-			canvas.height = height;  
-			
+			canvas.height = height; 
 			console.log("sx： "+sx+" sy："+sy+"swidth："+swidth+"sheight："+sheight+"width："+width+"height:"+height);
 			context.drawImage(img,sx,sy,swidth,sheight,0,0,width,height);
 			var imageData = canvas.toDataURL('image/png');
@@ -672,7 +722,9 @@
 					<img id="zoomInButton" class="zoomButton" src="../../img/scale/zoomIn.png" title="zoom in" alt="zoom in"> 
 					<img id="zoomOutButton" class="zoomButton" src="../../img/scale/zoomOut.png" title="zoom out" alt="zoom out">
 				  </span>
+				  
 				</p>
+				<input type="button" class="input-button upload-btn" value="上传">
 				<p>
 		        <span class="positionButtonSpan">		
 					<map name="positionMap" class="positionMapClass">		

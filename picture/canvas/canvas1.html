@@ -30,7 +30,13 @@
                  sy:可选,开始剪切的 y 坐标位置;
              swidth:可选,被剪切图像的宽度;
 			sheight:可选,被剪切图像的高度;
-				
+			
+			原图的宽和高均大于显示区域时：
+			 1.确定基准压缩图片;
+			   a.计算原始图片的宽/高的比例和显示区域的宽/高的比例;
+			   R1 = oragin_width / oragin_height;
+			   R2 = area_with / area_height;
+			   R1 = R2
 		     */
 			var c=document.getElementById("myCanvas");
 			var ctx=c.getContext("2d");
@@ -45,14 +51,14 @@
 				 */
 				var ow = 500,//原图宽
 				    oh = 500,//原图高
-				    width = 498,//伸展或缩小后的图像的宽
-				    height = 498,//伸展或缩小后的图像的高
-				    sx = 300,//开始剪切的 x 坐标位置
+				    width = 300,//伸展或缩小后的图像的宽
+				    height = 300,//伸展或缩小后的图像的高
+				    sx = 100,//开始剪切的 x 坐标位置
 				    sy = 0,//开始剪切的 y 坐标位置
-				    canvasw = width,//画布的宽
+				    canvasw = width ,//画布的宽
 				    canvash = height;//画布的高
 				c.width = canvasw;//画布的宽
-				c.height = canvasw;//画布的高	
+				c.height = canvash;//画布的高	
 				if(sx > ow - width){
 		   	  	 console.log("sx坐标过大");
 		   	  	   sx = ow -width;
@@ -67,6 +73,7 @@
 			}
 		   function isCheck(sx,sy,width,height,ow,oh){
 		   	//裁剪的横坐标(sx) + 伸展或缩小后的图像的宽(width) <= (原图宽)ow
+		   	  
 		   	  if(sx > ow - width){
 		   	  	console.log("sx坐标过大");
 		   	  	return false;
