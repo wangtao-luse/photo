@@ -99,7 +99,7 @@
 			/**		 
 			 *
 			 * 比例尺=图上距离/实际距离
-			 * 
+			 *  原图的宽/原图的高 =缩放后的宽/缩放后的高
 			 * 
 			 * js中浮点数计算不精确问题解决方案：
 			 * https://blog.csdn.net/qq_29393273/article/details/100154990
@@ -511,6 +511,20 @@
 			    sy =0,//开始剪切的 y 坐标位置			    
 			    width = swidth,
 			    height = sheight;
+			    var  sRatio = dw / swidth;
+			    if(ele.clientWidth>=dw){
+			    	width = ele.clientWidth / sRatio;
+			        height = ele.clientHeight / sRatio;
+			    }
+			    if(left<0){
+			    	var offset_x =Math.abs(left);
+			    	var offset_y = Math.abs(top);
+			    	sx = offset_x /wRatio;
+			    	sy = offset_y /hRatio;
+			    	
+			    }
+			   
+			    
 			//设置画布的宽度
 			canvas.width = width;
 			canvas.height = height; 
