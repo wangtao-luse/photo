@@ -61,6 +61,7 @@
 				width: 150px;
 				height: 150px;
 				border-radius: 50%;
+				border: 1px solid red;
 			}	
 		</style>
 		<script type="text/javascript" src="../../js/common/jquery-3.4.1.js.js" ></script>
@@ -93,12 +94,12 @@
 			
 		</script>
 		<script>
+			
+			
 			/**		 
 			 *
-			 * c = 187.698 /500  c=0.375396
-			 * 1.8492/w= 0.375396  w =45;
+			 * 比例尺=图上距离/实际距离
 			 * 
-			 *
 			 * 
 			 * js中浮点数计算不精确问题解决方案：
 			 * https://blog.csdn.net/qq_29393273/article/details/100154990
@@ -312,13 +313,11 @@
 			img_preview_wrap: ".pre-photo", //图片预览的标识 必须
 			zoomInButton: "#zoomInButton", //放大 必须
 			zoomOutButton: "#zoomOutButton", //缩小 必须
-			upload_btn:".upload-btn",
+			upload_btn:".upload-btn",//上传按钮
 			minheight: 184, //缩放时图片的最小高度
-			maxheight: 2000, //缩放图片的最大高度 
 			iwidth:150,//原图片最小宽度
 			iheight:150,//原图片最小高度
 			ratio: 1, //图片缩放比例
-			zoom_h: 184, //图片默认缩放高度
 			image: new Image(), //图片必须给一个图片路径
 			state: {},
 		}
@@ -352,20 +351,22 @@
 			var files = $(currentOptions.input_file_wrap)[0].files;
 			fr.readAsDataURL(files[0]);
 			fr.onload = function(e) {
-				defaultOptions.image.src = e.target.result;
+				currentOptions.image.src = e.target.result;
 				var img = new Image();
 				img.src = e.target.result;
 				img.onload = function() {
-					var width = img.width;
-					var height = img.height;
-					var w = width / height * currentOptions.zoom_h;
-					var h = currentOptions.zoom_h;
+					var width = currentOptions.image.width;
+					var height = currentOptions.image.height;
+					//图上距离/实际距离=r
+					//实际图片的宽/实际图片的高=缩放后图片的宽/缩放后的图片的高
+					var hRatio = currentOptions.minheight / height;
+					var w = width * hRatio; 
+					var h = height * hRatio;
 					var pw = (el.clientWidth - w) / 2;
 					ele.setAttribute('style',
 						'position: absolute; ' +
-						'width: ' + w.toFixed(2) + 'px; ' +
-						'height: ' +h.toFixed(2)+ 'px; ' +
-						'left: ' + pw.toFixed(4) + 'px; ' +
+						'height: ' +h+ 'px; ' +
+						'left: ' + pw + 'px; ' +
 						'top: ' + 0 + 'px; '
 					);
 					$(currentOptions.img_origin_wrap).attr("src", e.target.result);
@@ -393,7 +394,10 @@
 		function zoomIn() {
 			var zoom = isZoom("in");
 			if(zoom){return;}
-			currentOptions.ratio *= 1.01;
+			currentOptions.ratio *= 1.002;
+			if(currentOptions.ratio<1){
+				currentOptions.ratio = 1.002;
+			}
 			setimg();
 			var img = getDataURL();
 			$(currentOptions.img_preview_wrap).attr("src", img);			
@@ -402,17 +406,21 @@
 		function zoomOut() {
 			var zoom = isZoom("out");
 			if(zoom){return;}
-			currentOptions.ratio *= 0.99;
+			currentOptions.ratio *= 0.998;
+			if(currentOptions.ratio>1){
+				currentOptions.ratio = 0.998;
+			}
 			setimg();
 			var img = getDataURL();
 			$(currentOptions.img_preview_wrap).attr("src", img);
+			console.log("currentOptions.ratio: "+currentOptions.ratio);
 		}
         function isZoom(fun){
           //上传图片的宽和高(图片的实际宽和高)
 			var imgWidth = currentOptions.image.width;
 			var imgHeight = currentOptions.image.height;
-			//默认缩放后的宽和高(默认缩放指定高度(zoom_h))
-			var w = imgWidth / imgHeight * currentOptions.zoom_h;
+			//默认缩放后的宽和高(默认缩放指定高度(minheight))
+			var w = imgWidth / imgHeight * currentOptions.minheight;
 			var h = ele.clientHeight;
 			//1.如果上传图片的实际尺寸为150*150不缩放
 			var iszoom = (imgWidth == currentOptions.iwidth && imgHeight == currentOptions.iheight);
@@ -423,6 +431,12 @@
 			  if(h <= currentOptions.minheight){
 			  	return true;
 			  }
+			}
+			if(fun =="in"){
+				var maxheight = imgHeight * 3;
+				if(h >= maxheight){
+				  return true;
+				}
 			}
 			return false;
         }
@@ -461,75 +475,52 @@
         
         }
 		function setimg() {
-			//缩放后的高度和宽度
-			var tmp = currentOptions.image.width / currentOptions.image.height * parseFloat(ele.style.height),
-			    w = tmp * currentOptions.ratio,
-				h = currentOptions.zoom_h * currentOptions.ratio;
-			//缩放后图片在容器中的位置
-			var pw = (el.clientWidth - w) / 2;
-			//var ph = (el.clientHeight - h) / 2;			   
-			var ph = (currentOptions.zoom_h - h)/2;
+			//图上距离/实际距离=r
+			var wRatio = ele.clientWidth / currentOptions.image.width,
+			    hRatio = ele.clientHeight / currentOptions.image.height,
+			    width = currentOptions.image.width * wRatio * currentOptions.ratio,
+			    height = currentOptions.image.height * hRatio * currentOptions.ratio,
+			    left = (el.clientWidth - width) / 2,
+			    top = (currentOptions.minheight - height)/2;			
 			//设置缩放后的图片的位置
 			ele.setAttribute('style',
 				'position: absolute; ' +
-				'width: ' + w.toFixed(3) + 'px; ' +
-				'height: ' + h.toFixed(3) + 'px; ' +
-				'left: ' + pw.toFixed(4) + 'px; ' +
-				'top: ' + ph.toFixed(4) + 'px; ');
+				'width: ' + width + 'px; ' +
+				'height: ' + height+ 'px; ' +
+				'left: ' + left + 'px; ' +
+				'top: ' + top + 'px; ');
 		}
 
-		function getDataURL() {			
+		function getDataURL() {	
+			//150*150不做缩放
+			  if(currentOptions.image.width==currentOptions.iwidth &&currentOptions.image.height==currentOptions.iheight){
+			  	return;
+			  }
 			var canvas = document.createElement("canvas");
 			var context = canvas.getContext("2d");
-			var img = currentOptions.image;			    
-			var swidth = currentOptions.image.width,//原图w
+			var img = currentOptions.image,			    
+			    swidth = currentOptions.image.width,//原图w
 			    sheight = currentOptions.image.height,//原图h
-			    container_w = el.clientWidth,//容器的w
-			    container_h = el.clientHeight,//容器的h
-			    zoom_w = ele.clientWidth,//缩放后的图片的w
-			    zoom_h = ele.clientHeight,//缩放后的图片的h
-			    //默认缩放的宽
-			    sw =swidth / sheight * currentOptions.zoom_h,
-			    //默认偏移位置
-			    sleft = (el.clientWidth - sw) / 2,	
-			    stop  = 0,
-			    left = parseInt(ele.style.left),//缩放后图片的向左的偏移量
-			    top = parseInt(ele.style.top),//缩放后图片的向右的偏移量
+			    wRatio = ele.clientWidth / swidth,
+			    hRatio = ele.clientHeight / sheight,
+			    left = parseFloat(ele.style.left),//缩放后图片的向左的偏移量
+			    top = parseFloat(ele.style.top),//缩放后图片的向上的偏移量
+				dw = swidth * (currentOptions.minheight / sheight),//图片默认的宽
+				dleft =((el.clientWidth - dw) / 2),//默认偏移量
 			    sx =0,//开始剪切的 x 坐标位置
 			    sy =0,//开始剪切的 y 坐标位置			    
-			    width = currentOptions.iwidth,//缩放后图片的最小w
-			    height = currentOptions.iheight,//缩放后图片的最新h	
-			    //图片比例尺
-			    scaleW = zoom_w / swidth,
-			    scaleH = zoom_h / sheight;
-			//原图中的剪切的坐标
-		     if(zoom_w <= container_w){
-		     	//图片相对容器向上偏移量
-		     	var top = Math.abs(top);
-		     	//缩放的宽度 / 实际的宽度 = scaleW
-		     	//实际的宽度 = 实际缩放的宽度 / scaleW;
-		     	//实际缩放的宽度 = 默认的偏移量 - 偏移量
-		     	var tw = (Math.abs(sleft)-Math.abs(left))/ scaleW;
-		     	var th = Math.abs(top)/scaleH;
-		     	    sy = top;
-		     	width = swidth + tw;
-		     	height = sheight+ th;
-		     }else{
-		     	//缩放的宽度 / 实际的宽度 = scaleW
-		     	//实际宽度 = 缩放的宽度 / scaleW;
-		     	 // 缩放的宽度 = 偏移量-默认的偏移
-		     	 var t_w = Math.abs(left - sleft) /scaleW;
-		     	 var t_h = Math.abs(top) / scaleH;
-		     	 width = swidth + t_w;
-		     	 height = sheight + t_h;
-		     	
-		     	sx = Math.abs(left - sleft);
-		     	sy = top;
-		     }
-			//设置画布的宽度(默认为缩放图片的最小w和h)
+			    width = swidth,
+			    height = sheight;
+			    if(ele.clientWidth>dw&&left>=0){
+			    	//图上距离/实际距离=r
+			    	
+			    	width = (dleft - left)/ wRatio;
+			    	height = top / hRatio;
+			    }
+			   
+			//设置画布的宽度
 			canvas.width = width;
 			canvas.height = height; 
-			console.log("sx： "+sx+" sy："+sy+"swidth："+swidth+"sheight："+sheight+"width："+width+"height:"+height);
 			context.drawImage(img,sx,sy,swidth,sheight,0,0,width,height);
 			var imageData = canvas.toDataURL('image/png');
 			return imageData;
@@ -539,49 +530,72 @@
 			stopEvent(e);
 			pauseEvent(e);
 			var event = e || window.event;
-			currentOptions.state.dragable = true;
+			//1.记录下鼠标按下时的开始坐标
 			currentOptions.state.mouseX = event.clientX;
 			currentOptions.state.mouseY = event.clientY;
+			//2.将标志位dragable设为true，标识鼠标开始移动
+			currentOptions.state.dragable = true;
 			attachEvent(ele, "mousemove", mousemove);
-		} //当鼠标指针在指定的元素中移动时，就会发生 mousemove 事件。
+		} 
+		//当鼠标指针在指定的元素中移动时，就会发生 mousemove 事件。
 		function mousemove(e) {
 			stopEvent(e);
 			pauseEvent(e);
 			var event = e || event;
-			//已偏移量
-			var left = ele.style.left;
-			var top = ele.style.top;
+			
+			//1.判断startDrag为true（即鼠标开始移动）
 			if(currentOptions.state.dragable) {
-				//拖动的位移
+				//2.记录对应移动的距离
 				var x = event.clientX - currentOptions.state.mouseX;
 				var y = event.clientY - currentOptions.state.mouseY;
-				//新的偏移量
+				
+				//3.已偏移量
+				var left = ele.style.left;
+				var top = ele.style.top;
+				
+				//4.得到新的偏移量
 				var offset_x = (parseInt(left) + x).toFixed(2),
 				    offset_y = (parseInt(top) + y).toFixed(2);
+				    
+				//5.是否需要偏移   
 				var zoom = isZoom("move");
 				if(zoom){return;}
 				
+				//6.是否在运行拖拽的范围内
+			    //6.1缩放图片的高度
 				var h = ele.clientHeight;
-				var o_x = (el.clientWidth- currentOptions.zoom_h) / 2;
-				
+				 //6.2图片的实际高度
+				var height = currentOptions.image.height;
+				var width = currentOptions.image.width;
+				//6.3比例 = 图上距离 / 实际距离
+				var hRatio = currentOptions.minheight / height;
+				//6.4缩放的宽度
+				var w = width * hRatio;
+				//6.5 默认的偏移量
+				 var  o_x = (el.clientWidth - w) / 2;
 				//图片的宽度-(容器的宽度-偏移的宽度)=偏移量
-				var img_w = parseFloat(ele.style.width);
-				var wrap_w = parseFloat(el.clientWidth);
+				var img_w = ele.clientWidth;
+				var wrap_w = el.clientWidth;
 				var x_o = img_w - (wrap_w - o_x);
+				//x>0 ：向右拖拽;x<0:向左拖拽;
+				//向右拖拽的位移必须<=默认的偏移量;
 				if((offset_x <= o_x && x>0)||(offset_x>= -x_o && x<0)){
 					ele.style.left = offset_x + "px";
 					var img = getDataURL();
 					$(currentOptions.img_preview_wrap).attr("src", img);
 				}
+				//图片的高度-(容器的高度-偏移的高度)=偏移量
+				//7.1图片的高度必须大于最小高度
 				var mh = (h > currentOptions.minheight);
-				var img_h = parseFloat(ele.style.height);
-				var top_y = img_h - currentOptions.zoom_h;
-				var bottom_y = parseInt(top);
-				if(mh && ((offset_y >= -top_y && y < 0))||(offset_y <= -bottom_y  && y > 0)){
+				//7.2 图片的高 -图片允许的最小高度 =图片向上拖的最大偏移量
+				var top_y = ele.clientHeight - currentOptions.minheight;
+				//y<0:往上拖;y>0:往下拖;				
+				if(mh && ((offset_y >= -top_y && y < 0))||(offset_y <=0 && y > 0)){
 					ele.style.top = offset_y + "px";
 					var img = getDataURL();
 					$(currentOptions.img_preview_wrap).attr("src", img);
 				}
+				//8.更新鼠标的位置
 				currentOptions.state.mouseX = event.clientX;
 				currentOptions.state.mouseY = event.clientY;
 			}
@@ -724,7 +738,7 @@
 				  </span>
 				  
 				</p>
-				<input type="button" class="input-button upload-btn" value="上传">
+				
 				<p>
 		        <span class="positionButtonSpan">		
 					<map name="positionMap" class="positionMapClass">		
@@ -739,6 +753,7 @@
              </p>
 				
 		    </div>
+		    <input type="button" class="input-button upload-btn" value="上传">
 			
 		</div>
 	</body>
