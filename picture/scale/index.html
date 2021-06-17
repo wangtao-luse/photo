@@ -58,9 +58,9 @@
 				cursor: move;
 			}
 			.pre-photo{
-				width: 150px;
+				/*width: 150px;
 				height: 150px;
-				border-radius: 50%;
+				border-radius: 50%;*/
 				border: 1px solid red;
 			}	
 		</style>
@@ -511,13 +511,6 @@
 			    sy =0,//开始剪切的 y 坐标位置			    
 			    width = swidth,
 			    height = sheight;
-			    if(ele.clientWidth>dw&&left>=0){
-			    	//图上距离/实际距离=r
-			    	
-			    	width = (dleft - left)/ wRatio;
-			    	height = top / hRatio;
-			    }
-			   
 			//设置画布的宽度
 			canvas.width = width;
 			canvas.height = height; 
