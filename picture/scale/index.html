@@ -513,18 +513,18 @@
 			    height = sheight;
 			    var  sRatio = dw / swidth;
 			    var  dRatio = currentOptions.minheight /sheight;
-			    if(ele.clientWidth>=dw){
+			    if(ele.clientWidth>=dw&&left>0){
 			    	var offset_y = Math.abs(top);
 			    	sx = 0;
-			    	sy = offset_y / hRatio;
-			    	width = ele.clientWidth / wRatio;
-			        height = ele.clientHeight / hRatio;
+			    	sy = offset_y / dRatio;
+			    	width = swidth;
+			        height = sheight - sy;
 			    }
 			    if(left<0){
 			    	var offset_x =Math.abs(left);
 			    	var offset_y = Math.abs(top);
-			    	sx = offset_x /wRatio;
-			    	sy = offset_y /hRatio;
+			    	sx = offset_x /sRatio;
+			    	sy = offset_y /dRatio;
 			    	console.log("("+offset_x+" , "+offset_y+")");
 			    	width = swidth - sx;
 			    	height = sheight -sy;
@@ -586,7 +586,7 @@
 				var w = width * hRatio;
 				//6.5 默认的偏移量
 				 var  o_x = (el.clientWidth - w) / 2;
-				//图片的宽度-(容器的宽度-偏移的宽度)=偏移量
+				//图片的宽度-(容器的宽度-默认偏移的宽度)=偏移量
 				var img_w = ele.clientWidth;
 				var wrap_w = el.clientWidth;
 				var x_o = img_w - (wrap_w - o_x);
