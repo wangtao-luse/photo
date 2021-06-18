@@ -500,7 +500,7 @@
 			var context = canvas.getContext("2d");
 			var img = currentOptions.image,			    
 			    swidth = currentOptions.image.width,//原图w
-			    sheight = currentOptions.image.height,//原图h
+			    sheight = currentOptions.image.height,//原图h			    
 			    wRatio = ele.clientWidth / swidth,
 			    hRatio = ele.clientHeight / sheight,
 			    left = parseFloat(ele.style.left),//缩放后图片的向左的偏移量
@@ -512,12 +512,13 @@
 			    width = swidth,
 			    height = sheight;
 			    var  sRatio = dw / swidth;
+			    var  dRatio = currentOptions.minheight /sheight;
 			    if(ele.clientWidth>=dw){
 			    	var offset_y = Math.abs(top);
 			    	sx = 0;
 			    	sy = offset_y / hRatio;
-			    	width = ele.clientWidth / sRatio;
-			        height = ele.clientHeight / sRatio;
+			    	width = ele.clientWidth / wRatio;
+			        height = ele.clientHeight / hRatio;
 			    }
 			    if(left<0){
 			    	var offset_x =Math.abs(left);
@@ -529,7 +530,6 @@
 			    	height = sheight -sy;
 			    	
 			    }
-			   
 			    
 			//设置画布的宽度
 			canvas.width = width;
@@ -621,6 +621,7 @@
 			currentOptions.state.dragable = false;
 			var img = getDataURL();
 			$(currentOptions.img_preview_wrap).attr("src", img);
+			detachEvent(ele, "mousemove", mousemove);
 		}
 
 		function zoomImage() {
@@ -645,7 +646,7 @@
 			if(node.detachEvent) {
 				node.detachEvent('on' + event, cb);
 			} else if(node.removeEventListener) {
-				node.removeEventListener(event, render);
+				node.removeEventListener(event, cb);
 			}
 		}
 

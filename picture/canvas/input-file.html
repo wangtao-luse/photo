@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="../../js/common/jquery-3.4.1.js.js" ></script>
+		<style>
+			
+			.uplod-button{
+				position: relative;
+				width: 148px;
+				height: 38px;
+				line-height: 38px;
+				color: #fff;
+				border: 1px solid #06f;
+				border-radius: 999px;
+				background: #06f;
+				overflow: hidden;
+				text-align: center;
+				cursor: pointer;
+			}
+			.uplod-button:hover{
+				background: #005ce6;
+				border-color: #005ce6;
+				cursor: pointer;
+			}
+			.move-file{
+			  opacity: 0;
+			}
+			
+			.line{
+				margin-top:10px ;
+			}
+			.uplod-btn{
+				width: 148px;
+				height: 38px;
+				line-height: 38px;
+				border: 1px solid #0066FF;
+				text-align: center;
+				position: relative;
+				cursor: pointer;
+			}
+			.input-move-file{
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				cursor: pointer;
+				opacity: 0;
+			}
+		</style>
+		<script>
+			$(function(){
+				$(".uplod-button").click(function(){
+					document.querySelector(".move-file").click();
+				})
+			})
+			
+		</script>
+	</head>
+	<body>
+		<p>默认样式</p>
+		<input type="file" name="file" class="input-file" />
+		<p>
+			<p>调整后样式：设置元素的透明度</p>
+			<p>触发File的点击事件的方式:</p>
+		       <p>1. 点击按钮的时候触发file的点击事件;</p>
+		       <p>2.使用css定位让file在按钮上;</p>
+		</p>
+		<div class="uplod-button">
+			<span>上传图像</span>
+			<input type="file" name="file" class="move-file" />
+		</div>
+		
+		<div class="line"></div>
+		
+		<div class="uplod-btn">
+			<span>上传图像</span>
+			<input type="file" name="file" class="input-move-file" />
+		</div>
+		
+	</body>
+</html>

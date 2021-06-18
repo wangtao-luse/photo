@@ -21,7 +21,7 @@
         <script>
         	function fileReader(){
         		try{
-        			//1.构建FileReader对象
+        		//1.构建FileReader对象
         		var reader = new FileReader();
         		//2.Jquery对象转javaScript对象
         		var file = $("input[type='file']")[0].files[0];
@@ -36,10 +36,42 @@
 				}
         		
         	}
+        	
+        	function multipleFile(){
+        		try{
+	        		
+	        		
+	        		//Jquery对象转javaScript对象
+	        		var file = $("#input-file-mul")[0].files;
+	        		for(var i = 0;i<file.length;i++){
+	        			//1.构建FileReader对象
+	        			var reader = new FileReader();
+	        			//2.读取文件内容
+	        			reader.readAsDataURL(file[i]);
+						reader.onload = function(e){
+							var path = e.target.result;						
+							$(".pre-photos").append("<img src='"+path+"'>");
+						}
+	        		}
+        		} catch (e) {
+					throw new Error('browser doest not support FileReader')
+				}
+        		
+        	}
         </script>
 	</head>
 	<body>
-		<input type="file" name="file" onchange="fileReader()" />
-		<img alt="" class="pre-photo">
+		<p>单个文件</p>
+		<div class="sigle-wrap">
+			<input type="file" name="file" onchange="fileReader()" />
+			<img alt="" class="pre-photo">
+		</div>
+		<p>多文件</p>
+		<div class="multiple-wrap">
+			<input id="input-file-mul" type="file" name="file" onchange="multipleFile()" multiple="multiple">
+			<div class="pre-photos"></div>
+		</div>
+		 
+		
 	</body>
 </html>
