@@ -378,7 +378,7 @@
         function zoomIndown(){
         	timer = setInterval(function(){
         		zoomIn();
-        	},100)
+        	},300)
         }
         function zoomInleave(){
         	clearInterval(timer);
@@ -386,7 +386,7 @@
         function zoomOutdown(){
         	timer = setInterval(function(){
         		zoomOut();
-        	},100)
+        	},300)
         }
         function zoomOutleave(){
         	clearInterval(timer);
@@ -513,6 +513,9 @@
 			    height = sheight;
 			    var  sRatio = dw / swidth;
 			    if(ele.clientWidth>=dw){
+			    	var offset_y = Math.abs(top);
+			    	sx = 0;
+			    	sy = offset_y / hRatio;
 			    	width = ele.clientWidth / sRatio;
 			        height = ele.clientHeight / sRatio;
 			    }
@@ -521,6 +524,9 @@
 			    	var offset_y = Math.abs(top);
 			    	sx = offset_x /wRatio;
 			    	sy = offset_y /hRatio;
+			    	console.log("("+offset_x+" , "+offset_y+")");
+			    	width = swidth - sx;
+			    	height = sheight -sy;
 			    	
 			    }
 			   
