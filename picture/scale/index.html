@@ -58,9 +58,9 @@
 				cursor: move;
 			}
 			.pre-photo{
-				/*width: 150px;
+				width: 150px;
 				height: 150px;
-				border-radius: 50%;*/
+				border-radius: 50%;
 				border: 1px solid red;
 			}	
 		</style>
@@ -433,7 +433,7 @@
 			  }
 			}
 			if(fun =="in"){
-				var maxheight = imgHeight * 3;
+				var maxheight = imgHeight * 1.618;
 				if(h >= maxheight){
 				  return true;
 				}
@@ -507,34 +507,27 @@
 			    top = parseFloat(ele.style.top),//缩放后图片的向上的偏移量
 				dw = swidth * (currentOptions.minheight / sheight),//图片默认的宽
 				dleft =((el.clientWidth - dw) / 2),//默认偏移量
-			    sx =0,//开始剪切的 x 坐标位置
-			    sy =0,//开始剪切的 y 坐标位置			    
+			    sx = 0,//开始剪切的 x 坐标位置
+			    sy = 0,//开始剪切的 y 坐标位置			    
 			    width = swidth,
 			    height = sheight;
 			    var  sRatio = dw / swidth;
-			    var  dRatio = currentOptions.minheight /sheight;
-			    if(ele.clientWidth>=dw&&left>0){
-			    	var offset_y = Math.abs(top);
-			    	sx = 0;
-			    	sy = offset_y / dRatio;
-			    	width = swidth;
-			        height = sheight - sy;
-			    }
-			    if(left<0){
-			    	var offset_x =Math.abs(left);
-			    	var offset_y = Math.abs(top);
-			    	sx = offset_x /sRatio;
-			    	sy = offset_y /dRatio;
-			    	console.log("("+offset_x+" , "+offset_y+")");
+			    var  dRatio = currentOptions.minheight / sheight;
+			   if(left<dleft &&left>0){
+			   	    sx = (left -dleft) /wRatio;
+			   	    sy = top / hRatio ;
+			   	    width = swidth - sx;
+			   	    height = sheight - sy;
+			   }else if(left<0){
+			   	    sx = left / wRatio;
+			    	sy = top / hRatio;
 			    	width = swidth - sx;
-			    	height = sheight -sy;
-			    	
-			    }
-			    
+			    	height = sheight - sy;
+			   }
 			//设置画布的宽度
-			canvas.width = width;
-			canvas.height = height; 
-			context.drawImage(img,sx,sy,swidth,sheight,0,0,width,height);
+			canvas.width = swidth;
+			canvas.height = sheight; 
+			context.drawImage(img,0,0,swidth,sheight,sx,sy,width,height);
 			var imageData = canvas.toDataURL('image/png');
 			return imageData;
 		}
